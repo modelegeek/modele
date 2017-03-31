@@ -1,2 +1,4 @@
-./node_module
+.gitignore
+node_modules
 dist
+.idea
