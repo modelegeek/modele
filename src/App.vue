@@ -1,22 +1,19 @@
 <template>
   <div id="app">
     <!--<img src="./assets/logo.png">-->
-    <hello></hello>
     <table>
-        <rowgen></rowgen>
-        <rowgen></rowgen>
+        <sql-table></sql-table>
     </table>
   </div>
 </template>
 
 <script>
-  import Hello from './components/Hello'
-  import Rowgen from './components/Table'
+  import SqlTable from './components/SqlTable'
 
   export default {
     name: 'app',
     components: {
-      Rowgen, Hello
+      SqlTable
     }
   }
 </script>
