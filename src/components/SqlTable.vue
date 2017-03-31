@@ -1,20 +1,15 @@
 <template>
-  <div>
-    <table>
-      <tr>
-        <td>column</td>
-      </tr>
-    </table>
+  <div class="sql-table">
+    <td>{{tableDetail.name}}</td>
   </div>
 </template>
 
 <script>
   export default {
     name: 'sql-table',
+    props: ['tableDetail'],
     data () {
-      return {
-        msg: 'Welcome to Your Vue.js App',
-      }
+      return {}
     }
   }
 </script>
