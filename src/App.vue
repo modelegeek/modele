@@ -1,9 +1,6 @@
 <template>
   <div id="app">
-    <!--<img src="./assets/logo.png">-->
-    <table>
-        <sql-table></sql-table>
-    </table>
+    <sql-table></sql-table>
   </div>
 </template>
 
