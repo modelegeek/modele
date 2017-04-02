@@ -1,5 +1,5 @@
 <template>
-  <div id="app" @click="generateTable">
+  <div id="app" @click.alt.prevent="generateTable">
     <svg class="line-svg"></svg>
     <div is="sql-table"
          v-for="(tableDetail, index) in tableDetails"
@@ -23,11 +23,11 @@
       }
     },
     methods: {
-      generateTable: function (e){
+      generateTable: function (){
         var tableObject = {};
         tableObject.top = event.clientY;
         tableObject.left = event.clientX;
-        tableObject.name = 'Generated Name';
+        tableObject.name = null;
 
         this.tableDetails.push(tableObject);
       }

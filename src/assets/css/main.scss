@@ -1,3 +1,7 @@
+@import "variable";
+@import "helper";
+@import "input";
+
 * {
   box-sizing: border-box;
 }
@@ -32,22 +36,33 @@ html, body {
   }
 }
 
-.column-detail-box {
-  height: 210px;
-  width: 300px;
-  background-color: aliceblue;
-  label {
-    text-align: left;
+//.column-detail-box {
+//  height: 210px;
+//  width: 300px;
+//  background-color: aliceblue;
+//  label {
+//    text-align: left;
+//  }
+//}
+
+.sql-table {
+  position: absolute;
+  width: 200px;
+  border: 1px solid;
+  @include border-radius(10px);
+
+  .table-name {
+    border-bottom: 1px solid;
+  }
+
+  p {
+    margin: 5px 0;
   }
 }
 
-.sql-table{
-  position: absolute;
-}
-
-.line-svg{
-  height:100%;
-  width:100%;
+.line-svg {
+  height: 100%;
+  width: 100%;
   position: absolute;
   display: flex;
 }
