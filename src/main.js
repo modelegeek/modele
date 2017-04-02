@@ -19,7 +19,7 @@ Vue.directive('focus', {
     // Focus the element
     el.focus()
   },
-  update:function (el){
+  update: function (el){
     el.focus()
   }
 })
