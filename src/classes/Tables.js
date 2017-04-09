@@ -14,8 +14,8 @@ export default class Tables{
 
   getNullTable(){
     let countNull = 0
-    for (let value of this.tables) {
 
+    for (let value of this.tables) {
       if(value.name == null)
         countNull++;
     }

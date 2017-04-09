@@ -36,7 +36,7 @@
           return;
         }
 
-        let tableDetail = new TableDetail(event.clientX, event.clientY);
+        let tableDetail = new TableDetail().createNewTable(event.clientX, event.clientY);
         let tableObject = tableDetail.getTableDetail();
 
         tableObj.pushTable(tableObject);

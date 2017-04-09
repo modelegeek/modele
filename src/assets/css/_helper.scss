@@ -5,6 +5,12 @@
   border-radius: $radius;
 }
 
+@mixin user-select($value) {
+  -webkit-user-select: $value;
+  -moz-user-select: $value;
+  -ms-user-select: $value;
+}
+
 .text-left {
   text-align: left;
 }
@@ -19,4 +25,12 @@
 
 .hidden {
   display: none;
+}
+
+.padding-right-15 {
+  padding-right: 15px !important;
+}
+
+.padding-bottom-10{
+  padding-bottom: 10px !important;
 }
