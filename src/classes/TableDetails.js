@@ -8,7 +8,7 @@ export default class TableDetails {
     this.x = clientX;
     this.y = clientY;
     this.id = id;
-    this.name = "123";
+    this.name = "";
     this.next_column_id = 1;
     this.columns = [
       this.addDefaultColumn()
