@@ -66,8 +66,8 @@
 
   export default {
     name: 'table-column',
-    props: ['columnDetail'],
-    data(){
+    props: ['columnDetail', 'tableDetail'],
+    data (){
       return {
         dataTypes: new DataType().getAllType(),
       }
@@ -75,10 +75,16 @@
     methods: {
       updateColumn: function (){
         let column = this.columnDetail;
-        if(column.name == null){
+        if ( column.name == '') {
           alert('Column name cannot be empty');
           return false;
         }
+
+        if ( this.tableDetail.getSameColumnName(column.name) > 1 ) {
+          alert('Table cannot have same column name');
+          return;
+        }
+
         this.columnDetail.formHidden = true;
       },
       showColumnForm: function (){

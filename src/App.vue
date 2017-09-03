@@ -1,10 +1,10 @@
 <template>
-  <div id="app" @click.alt.prevent="generateTable">
+  <div id="app" @click.alt.prevent="appendTable">
 
-    <svg class="line-svg"></svg>
+    <!--<svg class="line-svg"></svg>-->
     <div is="sql-table"
-         v-for="(table, index) in tables"
-         :tables="tableObject"
+         v-for="(table, index) in database.tables"
+         :database="database"
          :tableDetail="table"
          :style="{top: table.y + 'px' , left: table.x + 'px' }"
     ></div>
@@ -13,34 +13,23 @@
 
 <script>
   import SqlTable from './components/SqlTable';
-  import TableDetail from './classes/TableDetail'
-  import Tables from './classes/Tables'
+  import Database from "./classes/Database";
 
-  let tableObj = new Tables([])
+  let database = new Database();
 
   export default {
     name: 'app',
     components: {
       SqlTable
     },
-    data(){
+    data (){
       return {
-        tableObject: tableObj,
-        tables: tableObj.getTables()
+        database: database,
       }
     },
     methods: {
-      generateTable: function (){
-        if ( tableObj.getNullTable() >= 1 ) {
-          alert('please fill in all table name to continue');
-          return;
-        }
-
-        let tableDetail = new TableDetail().createNewTable(event.clientX, event.clientY);
-        let tableObject = tableDetail.getTableDetail();
-
-        tableObj.pushTable(tableObject);
-        this.tables = tableObj.getTables();
+      appendTable: function (){
+        this.database.appendTable();
       }
     }
   }

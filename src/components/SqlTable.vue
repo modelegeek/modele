@@ -7,9 +7,11 @@
         <input type="text" v-model="tableDetail.name" @keyup.enter="submitTableName" v-focus/>
       </div>
     </div>
-    <!-- this need to change to component -->
+
     <div is="table-column"
          v-for="(column, index) in tableDetail.columns"
+         :key="column.id"
+         :tableDetail="tableDetail"
          :columnDetail="column">
     </div>
 
@@ -21,20 +23,16 @@
 </template>
 
 <script>
-  // class
-  import ColumnDetail from '../classes/ColumnDetail'
-  import TableDetail from '../classes/TableDetail'
-
   // component
   import TableColumn from './TableColumn';
 
   export default {
     name: 'sql-table',
-    props: ['tableDetail', 'tables'],
+    props: ['tableDetail', 'database'],
     components: {
       TableColumn
     },
-    data () {
+    data (){
       return {
         isHidden: true,
         isFormHidden: false,
@@ -44,13 +42,14 @@
       submitTableName: function (e){
 
         let tableName = this.tableDetail.name;
+
         if ( tableName == '' ) {
           alert('table name cannot be empty');
           return;
         }
 
-        if ( this.tables.getSameTableName(tableName) > 1 ) {
-          alert('table name cannot be same');
+        if ( this.database.getSameTableName(tableName) > 1 ) {
+          alert('Table cannot have same column name');
           return;
         }
 
@@ -62,16 +61,7 @@
         this.isFormHidden = false;
       },
       addColumn: function (){
-        let newColumn = new ColumnDetail().newColumn();
-        // check if there is null column in this table
-        let countNullName = new TableDetail(this.tableDetail).checkAllNullColumn();
-        if ( countNullName >= 1 ) {
-          alert('this table have null column name');
-          return false;
-        }
-        // hidden all column
-        new TableDetail(this.tableDetail).hideAllColumn();
-        this.tableDetail.columns.push(newColumn);
+        this.tableDetail.addColumn();
       }
     }
   }
