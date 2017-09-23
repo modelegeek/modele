@@ -55,4 +55,11 @@ export default class Database {
     this.tables.push(tableDetail);
   }
 
+  // remove the specific table
+  removeTable (index){
+    if ( window.confirm("Do you really want to delete this table?") ) {
+      this.tables.splice(index, 1);
+    }
+  }
+
 }

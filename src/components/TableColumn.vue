@@ -54,6 +54,7 @@
       </div>
 
       <div class="form-group col-md-8 col-md-offset-4 text-right padding-right-15">
+        <button class="btn primary" @click.pervent="removeColumn">Delete</button>
         <button class="btn primary" @click.pervent="updateColumn">Update</button>
       </div>
     </div>
@@ -66,7 +67,11 @@
 
   export default {
     name: 'table-column',
-    props: ['columnDetail', 'tableDetail'],
+    props: [
+      'columnDetail',
+      'tableDetail',
+      'index'
+    ],
     data (){
       return {
         dataTypes: new DataType().getAllType(),
@@ -75,12 +80,12 @@
     methods: {
       updateColumn: function (){
         let column = this.columnDetail;
-        if ( column.name == '') {
+        if ( column.name == '' || column.name == null ) {
           alert('Column name cannot be empty');
           return false;
         }
 
-        if ( this.tableDetail.getSameColumnName(column.name) > 1 ) {
+        if ( this.tableDetail.getSameColumnName(column.name) >= 1 ) {
           alert('Table cannot have same column name');
           return;
         }
@@ -89,7 +94,10 @@
       },
       showColumnForm: function (){
         this.columnDetail.formHidden = false;
-      }
+      },
+      removeColumn: function (){
+        this.tableDetail.removeColumn(this.index)
+      },
     }
   }
 </script>

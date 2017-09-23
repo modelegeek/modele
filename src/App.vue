@@ -5,6 +5,8 @@
     <div is="sql-table"
          v-for="(table, index) in database.tables"
          :database="database"
+         :index="index"
+         :key="table.id"
          :tableDetail="table"
          :style="{top: table.y + 'px' , left: table.x + 'px' }"
     ></div>
