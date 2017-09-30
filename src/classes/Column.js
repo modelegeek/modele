@@ -11,6 +11,7 @@ export default class Column {
     this.unique = false;
     this.primary_key = false;
     this.formHidden = false;
+    this.foreign = [];
   }
 
   // for create a default id column easier
@@ -23,5 +24,13 @@ export default class Column {
     this.primary_key = true;
 
     return this;
+  }
+
+  setForeignKey(table_id, column_id){
+    let foreignKey = {}
+    foreignKey.references = column_id;
+    foreignKey.on = table_id;
+
+    this.foreign.push(foreignKey);
   }
 }

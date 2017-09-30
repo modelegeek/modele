@@ -7,6 +7,15 @@ export default class Database {
   constructor (tables = []){
     this.tables = tables;
     this.next_table_id = 1;
+    this.foreign_broadcasting = null;
+  }
+
+  broadcastForeign (){
+    this.foreign_broadcasting = true;
+  }
+
+  stopBroadcastForeign (){
+    this.foreign_broadcasting = false;
   }
 
   // get all null tables count

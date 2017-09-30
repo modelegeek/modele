@@ -14,6 +14,7 @@
          :key="column.id"
          :index="index"
          :tableDetail="tableDetail"
+         :database="database"
          :columnDetail="column">
     </div>
 

@@ -54,6 +54,7 @@
       </div>
 
       <div class="form-group col-md-8 col-md-offset-4 text-right padding-right-15">
+        <button class="btn primary" @click.pervent="setForeign">Foreign</button>
         <button class="btn primary" @click.pervent="removeColumn">Delete</button>
         <button class="btn primary" @click.pervent="updateColumn">Update</button>
       </div>
@@ -64,12 +65,18 @@
 
 <script>
   import DataType from '../classes/DataType.js';
+  import ForeignKey from "../classes/ForeignKey";
+  import Vue from "vue";
+
+  // make a new vue just for broadcasting & listening event
+  var Events = new Vue({});
 
   export default {
     name: 'table-column',
     props: [
       'columnDetail',
       'tableDetail',
+      'database',
       'index'
     ],
     data (){
@@ -98,6 +105,33 @@
       removeColumn: function (){
         this.tableDetail.removeColumn(this.index)
       },
+      setForeign: function (){
+        let element = this.$el;
+        let table_id = this.tableDetail.id;
+        let column_id = this.columnDetail.id;
+        let columnDetail = this.columnDetail;
+
+        // if foreign broadcasting is on will trigger the custom function instead of
+        // create a function to broadcast again
+        if ( this.database.foreign_broadcasting) {
+
+          let foreignKey = new ForeignKey(element, 'to', table_id, column_id)
+          Events.$emit('setForeign', foreignKey);
+          this.database.stopBroadcastForeign();
+
+        } else {
+
+          Events.$once('setForeign', function (foreignKey){
+            // this is for testing only
+            alert('foreign set from table ' + table_id);
+
+            columnDetail.setForeignKey(foreignKey.table_id, foreignKey.column_id);
+          })
+
+          this.database.broadcastForeign();
+
+        }
+      }
     }
   }
 </script>
