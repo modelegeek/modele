@@ -1,5 +1,5 @@
 <template>
-  <div class="sql-table" v-draggable="tableDetail">
+  <div class="sql-table" v-draggable="{tableDetail: tableDetail, database: database}">
 
     <div class="table-name highlight-none">
       <p :class="{ hidden: isHidden}" @dblclick="showForm">{{tableDetail.name}}</p>

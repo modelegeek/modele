@@ -66,6 +66,7 @@
 <script>
   import DataType from '../classes/DataType.js';
   import ForeignKey from "../classes/ForeignKey";
+  import ForeignKeys from "../classes/ForeignKeys";
   import Vue from "vue";
 
   // make a new vue just for broadcasting & listening event
@@ -84,6 +85,9 @@
         dataTypes: new DataType().getAllType(),
       }
     },
+    updated: function () {
+      this.database.redrawForeignKeys();
+    },
     methods: {
       updateColumn: function (){
         let column = this.columnDetail;
@@ -98,6 +102,7 @@
         }
 
         this.columnDetail.formHidden = true;
+
       },
       showColumnForm: function (){
         this.columnDetail.formHidden = false;
@@ -110,6 +115,7 @@
         let table_id = this.tableDetail.id;
         let column_id = this.columnDetail.id;
         let columnDetail = this.columnDetail;
+        let databaseDetail = this.database;
 
         // if foreign broadcasting is on will trigger the custom function instead of
         // create a function to broadcast again
@@ -125,7 +131,11 @@
             // this is for testing only
             alert('foreign set from table ' + table_id);
 
+            let fromForeignKey = new ForeignKey(element, 'from', table_id, column_id)
+
             columnDetail.setForeignKey(foreignKey.table_id, foreignKey.column_id);
+
+            databaseDetail.foreign_keys.push(new ForeignKeys(fromForeignKey, foreignKey));
           })
 
           this.database.broadcastForeign();

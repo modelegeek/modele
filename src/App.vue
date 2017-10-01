@@ -1,7 +1,15 @@
 <template>
   <div id="app" @click.alt.prevent="appendTable">
 
-    <!--<svg class="line-svg"></svg>-->
+    <svg class="line-svg">
+      <path v-for="(foreignKey, index) in database.foreign_keys"
+            stroke-width="2"
+            :stroke="foreignKey.color"
+            :d="foreignKey.d"
+            fill="none"
+            ></path>
+    </svg>
+
     <div is="sql-table"
          v-for="(table, index) in database.tables"
          :database="database"

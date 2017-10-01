@@ -4,8 +4,9 @@ import Helper from "./Helper";
 export default class Database {
 
   // init a database constructor
-  constructor (tables = []){
+  constructor (tables = [], foreign_keys = []){
     this.tables = tables;
+    this.foreign_keys = foreign_keys;
     this.next_table_id = 1;
     this.foreign_broadcasting = null;
   }
@@ -68,6 +69,12 @@ export default class Database {
   removeTable (index){
     if ( window.confirm("Do you really want to delete this table?") ) {
       this.tables.splice(index, 1);
+    }
+  }
+
+  redrawForeignKeys (){
+    for ( let foreignKey of this.foreign_keys ) {
+      foreignKey.d = foreignKey.calculateD()
     }
   }
 
