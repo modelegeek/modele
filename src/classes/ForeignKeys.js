@@ -10,6 +10,8 @@ export default class VisualiseForeignKeys {
   calculateD (){
     let fromElement = this.from.element;
     let toElement = this.to.element;
+    // should have the same width
+    let widthElement = fromElement.offsetWidth;
 
     let rightFromElement = fromElement.getBoundingClientRect().right
     let leftFromElement = fromElement.getBoundingClientRect().left + window.scrollX;
@@ -22,18 +24,25 @@ export default class VisualiseForeignKeys {
     let rightToElement = toElement.getBoundingClientRect().right
     let leftToElement = toElement.getBoundingClientRect().left + window.scrollX;
     let topToElement = toElement.getBoundingClientRect().top + window.scrollY;
+
     let ToElementY = topToElement + ((toElement.offsetHeight - 2) / 2);
+
+    rightFromElement = Math.abs(rightFromElement);
+    rightToElement = Math.abs(rightToElement);
+    leftFromElement = Math.abs(leftFromElement);
+    leftToElement = Math.abs(leftToElement);
 
     let fromRightToLeftRange = rightFromElement - leftToElement;
     let fromLeftToRightRange = leftFromElement - rightToElement;
 
-    fromRightToLeftRange = Math.abs(fromRightToLeftRange);
-    fromLeftToRightRange = Math.abs(fromLeftToRightRange);
+    let RightToRight = rightFromElement - rightToElement;
+
+    RightToRight = Math.abs(RightToRight);
 
     let pointA = null;
     let pointB = null;
 
-    if ( fromRightToLeftRange <= fromLeftToRightRange ) {
+    if ( Math.abs(fromRightToLeftRange) <= Math.abs(fromLeftToRightRange) ) {
       pointA = { x: rightFromElement, y: FromElementY }
       pointB = { x: leftToElement, y: ToElementY }
     } else {
@@ -41,7 +50,27 @@ export default class VisualiseForeignKeys {
       pointB = { x: leftFromElement, y: FromElementY }
     }
 
+    if ( RightToRight <= widthElement ) {
+      pointA = { x: rightFromElement, y: FromElementY }
+      pointB = { x: rightToElement, y: ToElementY }
+
+      return this.assignCurvetoFunction(pointA, pointB, widthElement)
+    }
+
     return this.assignCubicFunction(pointA, pointB)
+  }
+
+  assignCurvetoFunction (pointA, pointB, widthElement){
+
+    let middleX = pointA.x + (widthElement / 2);
+    let StartPoint = "M " + pointA.x + ' ' + pointA.y;
+
+    let CurvetoPoint = "Q " + middleX + ' ' + ((pointA.y + pointB.y) / 2) ;
+    let EndPoint = " " + pointB.x + ' ' + pointB.y;
+
+    let d = StartPoint + CurvetoPoint + EndPoint;
+
+    return d;
   }
 
   assignCubicFunction (pointA, pointB){
