@@ -68,6 +68,7 @@ export default class Database {
   // remove the specific table
   removeTable (index){
     if ( window.confirm("Do you really want to delete this table?") ) {
+      this.removeForeignKey(this.tables[index].id);
       this.tables.splice(index, 1);
     }
   }
@@ -78,4 +79,42 @@ export default class Database {
     }
   }
 
+  removeForeignKey (columnId, tableId){
+    // foreach every table
+    let foreignKeyToRemove = this.getAllRelatedKey(columnId, tableId);
+
+    console.log(foreignKeyToRemove);
+  }
+
+  getAllRelatedKey (tableId, columnId = null){
+    let foreignKeyToRemove = [];
+    let foreignKeys = this.foreign_keys;
+
+    for ( let i = foreignKeys.length - 1; i >= 0; i -= 1 ) {
+      let foreignKeyFrom = foreignKeys[i].from;
+      let foreignKeyTo = foreignKeys[i].to;
+
+      let conditionFrom = foreignKeyFrom.table_id == tableId;
+      let conditionTo = foreignKeyTo.table_id == tableId;
+
+      if ( columnId != null) {
+        conditionFrom = foreignKeyFrom.column_id == columnId && foreignKeyFrom.table_id == tableId;
+        conditionTo = foreignKeyTo.column_id == columnId && foreignKeyTo.table_id == tableId;
+      }
+
+      if ( conditionFrom || conditionTo ) {
+        let tableFrom = foreignKeyFrom.table_id
+        let columnFrom = foreignKeyFrom.column_id
+        foreignKeyToRemove.push([tableFrom, columnFrom])
+
+        let tableTo = foreignKeyTo.table_id
+        let columnTo = foreignKeyTo.column_id
+        foreignKeyToRemove.push([tableTo, columnTo])
+
+        this.foreign_keys.splice(i, 1);
+      }
+    }
+
+    return foreignKeyToRemove;
+  }
 }

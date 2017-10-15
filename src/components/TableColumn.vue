@@ -85,7 +85,7 @@
         dataTypes: new DataType().getAllType(),
       }
     },
-    updated: function () {
+    updated: function (){
       this.database.redrawForeignKeys();
     },
     methods: {
@@ -108,7 +108,7 @@
         this.columnDetail.formHidden = false;
       },
       removeColumn: function (){
-        this.tableDetail.removeColumn(this.index)
+        this.tableDetail.removeColumn(this.index, this.database, this.columnDetail.id)
       },
       setForeign: function (){
         let element = this.$el;
@@ -119,7 +119,7 @@
 
         // if foreign broadcasting is on will trigger the custom function instead of
         // create a function to broadcast again
-        if ( this.database.foreign_broadcasting) {
+        if ( this.database.foreign_broadcasting ) {
 
           let foreignKey = new ForeignKey(element, 'to', table_id, column_id)
           Events.$emit('setForeign', foreignKey);
@@ -128,13 +128,8 @@
         } else {
 
           Events.$once('setForeign', function (foreignKey){
-            // this is for testing only
-            alert('foreign set from table ' + table_id);
-
             let fromForeignKey = new ForeignKey(element, 'from', table_id, column_id)
-
             columnDetail.setForeignKey(foreignKey.table_id, foreignKey.column_id);
-
             databaseDetail.foreign_keys.push(new ForeignKeys(fromForeignKey, foreignKey));
           })
 

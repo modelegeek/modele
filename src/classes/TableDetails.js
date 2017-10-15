@@ -91,7 +91,7 @@ export default class TableDetails {
 
       let columnName = new Helper().transformName(column.name);
 
-      if ( columnName == name && column.formHidden === true) {
+      if ( columnName == name && column.formHidden === true ) {
         count++;
       }
     }
@@ -99,7 +99,10 @@ export default class TableDetails {
     return count;
   }
 
-  removeColumn (index){
+  // remove column and also foreign key
+  removeColumn (index, database, column_id){
+    database.removeForeignKey(this.id, column_id);
+
     this.columns.splice(index, 1);
   }
 }
