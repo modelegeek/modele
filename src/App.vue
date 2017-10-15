@@ -1,6 +1,7 @@
 <template>
   <div id="app" @click.alt.prevent="appendTable">
 
+    <table-menu v-on:createTable="appendTableWithButton" :database="database"></table-menu>
     <svg class="line-svg">
       <path v-for="(foreignKey, index) in database.foreign_keys"
             stroke-width="2"
@@ -23,6 +24,7 @@
 
 <script>
   import SqlTable from './components/SqlTable';
+  import TableMenu from './components/TableMenu';
   import Database from "./classes/Database";
 
   let database = new Database();
@@ -30,7 +32,8 @@
   export default {
     name: 'app',
     components: {
-      SqlTable
+      SqlTable,
+      TableMenu,
     },
     data (){
       return {
@@ -40,6 +43,9 @@
     methods: {
       appendTable: function (){
         this.database.appendTable();
+      },
+      appendTableWithButton: function (){
+        this.database.appendTableWithButton();
       }
     }
   }
