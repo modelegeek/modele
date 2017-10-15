@@ -54,5 +54,19 @@ export default class Database {
 
     this.tables.push(tableDetail);
   }
+  appendTableWithButton (){
+    if ( this.getNullTables() >= 1 ) {
+      alert('please fill in all table name to continue');
+      return;
+    }
+
+    let table_id = this.next_table_id;
+
+    let tableDetail = new TableDetails(table_id, 0, 0);
+
+    this.next_table_id++;
+
+    this.tables.push(tableDetail);
+  }
 
 }
