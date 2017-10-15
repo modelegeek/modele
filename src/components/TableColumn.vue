@@ -54,6 +54,8 @@
       </div>
 
       <div class="form-group col-md-8 col-md-offset-4 text-right padding-right-15">
+        <button class="btn primary" @click.pervent="setForeign">Foreign</button>
+        <button class="btn primary" @click.pervent="removeColumn">Delete</button>
         <button class="btn primary" @click.pervent="updateColumn">Update</button>
       </div>
     </div>
@@ -63,32 +65,82 @@
 
 <script>
   import DataType from '../classes/DataType.js';
+  import ForeignKey from "../classes/ForeignKey";
+  import ForeignKeys from "../classes/ForeignKeys";
+  import Vue from "vue";
+
+  // make a new vue just for broadcasting & listening event
+  var Events = new Vue({});
 
   export default {
     name: 'table-column',
-    props: ['columnDetail', 'tableDetail'],
+    props: [
+      'columnDetail',
+      'tableDetail',
+      'database',
+      'index'
+    ],
     data (){
       return {
         dataTypes: new DataType().getAllType(),
       }
     },
+    updated: function () {
+      this.database.redrawForeignKeys();
+    },
     methods: {
       updateColumn: function (){
         let column = this.columnDetail;
-        if ( column.name == '') {
+        if ( column.name == '' || column.name == null ) {
           alert('Column name cannot be empty');
           return false;
         }
 
-        if ( this.tableDetail.getSameColumnName(column.name) > 1 ) {
+        if ( this.tableDetail.getSameColumnName(column.name) >= 1 ) {
           alert('Table cannot have same column name');
           return;
         }
 
         this.columnDetail.formHidden = true;
+
       },
       showColumnForm: function (){
         this.columnDetail.formHidden = false;
+      },
+      removeColumn: function (){
+        this.tableDetail.removeColumn(this.index)
+      },
+      setForeign: function (){
+        let element = this.$el;
+        let table_id = this.tableDetail.id;
+        let column_id = this.columnDetail.id;
+        let columnDetail = this.columnDetail;
+        let databaseDetail = this.database;
+
+        // if foreign broadcasting is on will trigger the custom function instead of
+        // create a function to broadcast again
+        if ( this.database.foreign_broadcasting) {
+
+          let foreignKey = new ForeignKey(element, 'to', table_id, column_id)
+          Events.$emit('setForeign', foreignKey);
+          this.database.stopBroadcastForeign();
+
+        } else {
+
+          Events.$once('setForeign', function (foreignKey){
+            // this is for testing only
+            alert('foreign set from table ' + table_id);
+
+            let fromForeignKey = new ForeignKey(element, 'from', table_id, column_id)
+
+            columnDetail.setForeignKey(foreignKey.table_id, foreignKey.column_id);
+
+            databaseDetail.foreign_keys.push(new ForeignKeys(fromForeignKey, foreignKey));
+          })
+
+          this.database.broadcastForeign();
+
+        }
       }
     }
   }

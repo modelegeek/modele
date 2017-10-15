@@ -86,13 +86,20 @@ export default class TableDetails {
     name = new Helper().transformName(name);
 
     for ( let column  of this.columns ) {
+      if ( column.name == "" )
+        return false;
+
       let columnName = new Helper().transformName(column.name);
 
-      if ( columnName == name ) {
+      if ( columnName == name && column.formHidden === true) {
         count++;
       }
     }
 
     return count;
+  }
+
+  removeColumn (index){
+    this.columns.splice(index, 1);
   }
 }

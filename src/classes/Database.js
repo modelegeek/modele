@@ -4,9 +4,19 @@ import Helper from "./Helper";
 export default class Database {
 
   // init a database constructor
-  constructor (tables = []){
+  constructor (tables = [], foreign_keys = []){
     this.tables = tables;
+    this.foreign_keys = foreign_keys;
     this.next_table_id = 1;
+    this.foreign_broadcasting = null;
+  }
+
+  broadcastForeign (){
+    this.foreign_broadcasting = true;
+  }
+
+  stopBroadcastForeign (){
+    this.foreign_broadcasting = false;
   }
 
   // get all null tables count
@@ -67,6 +77,19 @@ export default class Database {
     this.next_table_id++;
 
     this.tables.push(tableDetail);
+  }
+
+  // remove the specific table
+  removeTable (index){
+    if ( window.confirm("Do you really want to delete this table?") ) {
+      this.tables.splice(index, 1);
+    }
+  }
+
+  redrawForeignKeys (){
+    for ( let foreignKey of this.foreign_keys ) {
+      foreignKey.d = foreignKey.calculateD()
+    }
   }
 
 }
