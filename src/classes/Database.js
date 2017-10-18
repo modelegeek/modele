@@ -1,5 +1,6 @@
 import TableDetails from "./TableDetails";
 import Helper from "./Helper";
+import _ from "lodash";
 
 export default class Database {
 
@@ -64,6 +65,7 @@ export default class Database {
 
     this.tables.push(tableDetail);
   }
+
   appendTableWithButton (){
     if ( this.getNullTables() >= 1 ) {
       alert('please fill in all table name to continue');
@@ -104,6 +106,7 @@ export default class Database {
     let foreignKeyToRemove = [];
     let foreignKeys = this.foreign_keys;
 
+    // backward index cause the id
     for ( let i = foreignKeys.length - 1; i >= 0; i -= 1 ) {
       let foreignKeyFrom = foreignKeys[i].from;
       let foreignKeyTo = foreignKeys[i].to;
@@ -111,7 +114,7 @@ export default class Database {
       let conditionFrom = foreignKeyFrom.table_id == tableId;
       let conditionTo = foreignKeyTo.table_id == tableId;
 
-      if ( columnId != null) {
+      if ( columnId != null ) {
         conditionFrom = foreignKeyFrom.column_id == columnId && foreignKeyFrom.table_id == tableId;
         conditionTo = foreignKeyTo.column_id == columnId && foreignKeyTo.table_id == tableId;
       }
@@ -125,10 +128,27 @@ export default class Database {
         let columnTo = foreignKeyTo.column_id
         foreignKeyToRemove.push([tableTo, columnTo])
 
+        this.findAndRemoveForeignKey(tableFrom, tableTo, columnFrom, columnTo);
+        this.findAndRemoveForeignKey(tableTo, tableFrom, columnTo, columnFrom);
+
         this.foreign_keys.splice(i, 1);
       }
     }
-
     return foreignKeyToRemove;
+  }
+
+  findAndRemoveForeignKey (tableId, foreignTableId, columnId = null, foreignColumnId = null){
+    let table = _.find(this.tables, function (table){
+      return table.id == tableId;
+    });
+
+    let column = _.find(table.columns, function (column){
+      return column.id == columnId;
+    });
+
+    let foreignKeyIndex = _.findIndex(column.foreign, { 'references': foreignColumnId, 'on': foreignTableId });
+
+    if ( foreignKeyIndex >= 0 )
+      column.foreign.splice(foreignKeyIndex, 1);
   }
 }
