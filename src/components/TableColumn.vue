@@ -169,7 +169,11 @@
             // find if this column have this foreign key set
             let similarForeignKey = _.find(columnForeignDetail.foreign, { 'references': column_id, 'on': table_id });
             if ( similarForeignKey ) {
-              alert("foreign key set");
+              alert("Foreign key already set");
+
+              databaseDetail.stopBroadcastForeign(foreignKeyEvent);
+
+              return;
             }
 
             // set up a foreign key object (child key)
@@ -186,9 +190,6 @@
 
             // stop broadcasting flag the foreign key
             databaseDetail.stopBroadcastForeign();
-
-            // close the event in it successful setup
-            Events.$off(['setForeign', foreignKeyEvent]);
           })
 
           this.database.broadcastForeign();

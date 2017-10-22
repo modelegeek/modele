@@ -16,8 +16,11 @@ export default class Database {
     this.foreign_broadcasting = true;
   }
 
-  stopBroadcastForeign (){
+  stopBroadcastForeign (foreignKeyEvent){
     this.foreign_broadcasting = false;
+
+    // close the event in it successful setup
+    Events.$off(['setForeign', foreignKeyEvent]);
   }
 
   // get all null tables count
@@ -89,12 +92,14 @@ export default class Database {
     }
   }
 
+  // redraw foreign key
   redrawForeignKeys (){
     for ( let foreignKey of this.foreign_keys ) {
       foreignKey.d = foreignKey.calculateD()
     }
   }
 
+  // remove this foreign key
   removeForeignKey (columnId, tableId){
     // foreach every table
     let foreignKeyToRemove = this.getAllRelatedKey(columnId, tableId);
@@ -102,6 +107,7 @@ export default class Database {
     console.log(foreignKeyToRemove);
   }
 
+  // get all related key from the table and column id
   getAllRelatedKey (tableId, columnId = null){
     let foreignKeyToRemove = [];
     let foreignKeys = this.foreign_keys;
@@ -137,6 +143,7 @@ export default class Database {
     return foreignKeyToRemove;
   }
 
+  // find and remove certain foreign key
   findAndRemoveForeignKey (tableId, foreignTableId, columnId = null, foreignColumnId = null){
     let table = _.find(this.tables, function (table){
       return table.id == tableId;

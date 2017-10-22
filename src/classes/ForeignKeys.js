@@ -10,6 +10,7 @@ export default class VisualiseForeignKeys {
   calculateD (){
     let fromElement = this.from.element;
     let toElement = this.to.element;
+
     // should have the same width
     let widthElement = fromElement.offsetWidth;
 
@@ -74,7 +75,6 @@ export default class VisualiseForeignKeys {
   }
 
   assignCubicFunction (pointA, pointB){
-
     let middleX = (pointA.x + pointB.x) / 2;
     let StartPoint = "M " + pointA.x + ' ' + pointA.y;
 
@@ -86,5 +86,4 @@ export default class VisualiseForeignKeys {
 
     return d;
   }
-
 }
