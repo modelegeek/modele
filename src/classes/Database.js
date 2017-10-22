@@ -1,5 +1,6 @@
 import TableDetails from "./TableDetails";
 import Helper from "./Helper";
+import _ from "lodash";
 
 export default class Database {
 
@@ -105,6 +106,7 @@ export default class Database {
     let foreignKeyToRemove = [];
     let foreignKeys = this.foreign_keys;
 
+    // backward index cause the id
     for ( let i = foreignKeys.length - 1; i >= 0; i -= 1 ) {
       let foreignKeyFrom = foreignKeys[i].from;
       let foreignKeyTo = foreignKeys[i].to;
@@ -126,14 +128,31 @@ export default class Database {
         let columnTo = foreignKeyTo.column_id
         foreignKeyToRemove.push([tableTo, columnTo])
 
+        this.findAndRemoveForeignKey(tableFrom, tableTo, columnFrom, columnTo);
+        this.findAndRemoveForeignKey(tableTo, tableFrom, columnTo, columnFrom);
+
         this.foreign_keys.splice(i, 1);
       }
     }
-
     return foreignKeyToRemove;
   }
 
-  loadData(loadedData){
+  findAndRemoveForeignKey (tableId, foreignTableId, columnId = null, foreignColumnId = null){
+    let table = _.find(this.tables, function (table){
+      return table.id == tableId;
+    });
+
+    let column = _.find(table.columns, function (column){
+      return column.id == columnId;
+    });
+
+    let foreignKeyIndex = _.findIndex(column.foreign, { 'references': foreignColumnId, 'on': foreignTableId });
+
+    if ( foreignKeyIndex >= 0 )
+      column.foreign.splice(foreignKeyIndex, 1);
+  }
+
+  loadData (loadedData){
     this.tables = loadedData.tables;
     this.foreign_keys = loadedData.foreign_keys;
     this.next_table_id = loadedData.next_table_id;

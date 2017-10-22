@@ -1,7 +1,6 @@
 <template>
   <div id="app" @click.alt.prevent="appendTable">
 
-    <table-menu v-on:createTable="appendTableWithButton" :database="database"></table-menu>
     <svg class="line-svg">
       <path v-for="(foreignKey, index) in database.foreign_keys"
             stroke-width="2"
@@ -10,6 +9,8 @@
             fill="none"
             ></path>
     </svg>
+
+    <table-menu v-on:createTable="appendTableWithButton" :database="database" style="z-index: 1"></table-menu>
 
     <div is="sql-table"
          v-for="(table, index) in database.tables"

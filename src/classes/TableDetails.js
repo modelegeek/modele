@@ -41,6 +41,8 @@ export default class TableDetails {
 
     // push into this table column
     this.columns.push(column)
+
+    return column;
   }
 
   // to add a default id primary key to the newly created table
