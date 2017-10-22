@@ -10,6 +10,7 @@ export default class Column {
     this.nullable = false;
     this.unique = false;
     this.primary_key = false;
+    this.element = "";
     this.formHidden = false;
     this.foreign = [];
   }

@@ -30,7 +30,8 @@
   // component
   import Vue from "vue";
   import TableColumn from './TableColumn';
-  import ForeignKey from "../classes/ForeignKey";
+  import ForeignKey from "../interface/ForeignKey";
+  import ForeignKeyEvent from "../interface/ForeignKeyEvent";
 
   export default {
     name: 'sql-table',
@@ -54,13 +55,9 @@
 
         if ( this.database.foreign_broadcasting ) {
           let column = this.tableDetail.addColumn();
-          let column_id = column.id;
 
           this.$nextTick(function (){
-            let columns = this.$refs.column;
-            let element = columns[columns.length - 1].$el
-
-            let foreignKey = new ForeignKey(element, 'to', table_id, column_id)
+            let foreignKey = new ForeignKeyEvent(column, table_id)
 
             Events.$emit('setForeign', foreignKey);
           })
