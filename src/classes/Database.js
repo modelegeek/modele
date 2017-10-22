@@ -64,6 +64,7 @@ export default class Database {
 
     this.tables.push(tableDetail);
   }
+
   appendTableWithButton (){
     if ( this.getNullTables() >= 1 ) {
       alert('please fill in all table name to continue');
@@ -111,7 +112,7 @@ export default class Database {
       let conditionFrom = foreignKeyFrom.table_id == tableId;
       let conditionTo = foreignKeyTo.table_id == tableId;
 
-      if ( columnId != null) {
+      if ( columnId != null ) {
         conditionFrom = foreignKeyFrom.column_id == columnId && foreignKeyFrom.table_id == tableId;
         conditionTo = foreignKeyTo.column_id == columnId && foreignKeyTo.table_id == tableId;
       }
@@ -130,5 +131,11 @@ export default class Database {
     }
 
     return foreignKeyToRemove;
+  }
+
+  loadData(loadedData){
+    this.tables = loadedData.tables;
+    this.foreign_keys = loadedData.foreign_keys;
+    this.next_table_id = loadedData.next_table_id;
   }
 }
