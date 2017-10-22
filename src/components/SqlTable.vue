@@ -5,7 +5,7 @@
       <p :class="{ hidden: isHidden}" @dblclick="showForm">{{tableDetail.name}}</p>
       <div class="table-name-form" :class="{ hidden: isFormHidden}">
         <input type="text" v-model="tableDetail.name" @keyup.enter="submitTableName" v-focus/>
-        <span @click="removeTable"> X </span>
+        <span @click="removeTable"> x </span>
       </div>
     </div>
 
@@ -15,7 +15,6 @@
          :index="index"
          :tableDetail="tableDetail"
          :database="database"
-         ref="column"
          :columnDetail="column">
     </div>
 

@@ -68,6 +68,7 @@
   import ForeignKey from "../interface/ForeignKey";
   import ForeignKeys from "../classes/ForeignKeys";
   import ForeignKeyEvent from "../interface/ForeignKeyEvent";
+  import _ from "lodash";
 
   export default {
     name: 'table-column',
@@ -165,8 +166,15 @@
               return;
             }
 
+            // find if this column have this foreign key set
+            let similarForeignKey = _.find(columnForeignDetail.foreign, { 'references': column_id, 'on': table_id });
+            if ( similarForeignKey ) {
+              alert("foreign key set");
+            }
+
             // set up a foreign key object (child key)
             let toForeignKey = new ForeignKey(columnForeignDetail.element, 'to', foreignKeyEvent.table_id, columnForeignDetail.id);
+
             // parent key
             let fromForeignKey = new ForeignKey(element, 'from', table_id, column_id);
 
@@ -184,7 +192,6 @@
           })
 
           this.database.broadcastForeign();
-
         }
       }
     }
