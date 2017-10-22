@@ -1,7 +1,7 @@
 <template>
   <div class="sql-table" v-draggable="{tableDetail: tableDetail, database: database}">
 
-    <div class="table-name highlight-none">
+    <div class="table-name highlight-none" @click.pervent="tableLinkForeign">
       <p :class="{ hidden: isHidden}" @dblclick="showForm">{{tableDetail.name}}</p>
       <div class="table-name-form" :class="{ hidden: isFormHidden}">
         <input type="text" v-model="tableDetail.name" @keyup.enter="submitTableName" v-focus/>
@@ -15,6 +15,7 @@
          :index="index"
          :tableDetail="tableDetail"
          :database="database"
+         ref="column"
          :columnDetail="column">
     </div>
 
@@ -27,7 +28,9 @@
 
 <script>
   // component
+  import Vue from "vue";
   import TableColumn from './TableColumn';
+  import ForeignKey from "../classes/ForeignKey";
 
   export default {
     name: 'sql-table',
@@ -46,8 +49,24 @@
       }
     },
     methods: {
-      submitTableName: function (e){
+      tableLinkForeign: function (){
+        let table_id = this.tableDetail.id;
 
+        if ( this.database.foreign_broadcasting ) {
+          let column = this.tableDetail.addColumn();
+          let column_id = column.id;
+
+          this.$nextTick(function (){
+            let columns = this.$refs.column;
+            let element = columns[columns.length - 1].$el
+
+            let foreignKey = new ForeignKey(element, 'to', table_id, column_id)
+
+            Events.$emit('setForeign', foreignKey);
+          })
+        }
+      },
+      submitTableName: function (){
         let tableName = this.tableDetail.name;
 
         if ( tableName == '' ) {

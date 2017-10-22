@@ -1,5 +1,5 @@
 <template>
-  <div class="column-detail-box container-fluid">
+  <div class="column-detail-box container-fluid" @click.pervent="linkForeign">
     <div class="row">
       <div :class="{ hidden: columnDetail.formHidden == false ? true :false }" @dblclick="showColumnForm" class="highlight-none column col-md-12">
         <p class="col-md-6 text-left">{{columnDetail.name}}</p>
@@ -67,10 +67,6 @@
   import DataType from '../classes/DataType.js';
   import ForeignKey from "../classes/ForeignKey";
   import ForeignKeys from "../classes/ForeignKeys";
-  import Vue from "vue";
-
-  // make a new vue just for broadcasting & listening event
-  var Events = new Vue({});
 
   export default {
     name: 'table-column',
@@ -110,6 +106,19 @@
       removeColumn: function (){
         this.tableDetail.removeColumn(this.index, this.database, this.columnDetail.id)
       },
+      linkForeign: function (){
+        let element = this.$el;
+        let table_id = this.tableDetail.id;
+        let column_id = this.columnDetail.id;
+
+        // if foreign broadcasting is on will trigger the custom function instead of
+        // create a function to broadcast again
+        if ( this.database.foreign_broadcasting ) {
+          let foreignKey = new ForeignKey(element, 'to', table_id, column_id)
+
+          Events.$emit('setForeign', foreignKey);
+        }
+      },
       setForeign: function (){
         let element = this.$el;
         let table_id = this.tableDetail.id;
@@ -121,16 +130,34 @@
         // create a function to broadcast again
         if ( this.database.foreign_broadcasting ) {
 
+          // set up a foreign key object
           let foreignKey = new ForeignKey(element, 'to', table_id, column_id)
+
+          // return setForeign method
           Events.$emit('setForeign', foreignKey);
-          this.database.stopBroadcastForeign();
 
         } else {
 
-          Events.$once('setForeign', function (foreignKey){
-            let fromForeignKey = new ForeignKey(element, 'from', table_id, column_id)
+          // listening method for setForeign key method
+          Events.$on('setForeign', function (foreignKey){
+            if ( foreignKey.table_id == table_id && foreignKey.column_id == column_id ) {
+              return;
+            }
+
+            // set up a foreign key object
+            let fromForeignKey = new ForeignKey(element, 'from', table_id, column_id);
+
+            // set the foreign key in this column to extracting the foreign key later in migration file
             columnDetail.setForeignKey(foreignKey.table_id, foreignKey.column_id);
+
+            // push foreign key in the top-est level in the ecosystem (for drawing the line)
             databaseDetail.foreign_keys.push(new ForeignKeys(fromForeignKey, foreignKey));
+
+            // stop braadcasting flag the foreign key
+            databaseDetail.stopBroadcastForeign();
+
+            // close the event in it successful setup
+            Events.$off(['setForeign', foreignKey]);
           })
 
           this.database.broadcastForeign();

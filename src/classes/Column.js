@@ -1,9 +1,9 @@
 export default class Column {
 
   // construct a new column types
-  constructor (id){
+  constructor (id, name = ""){
     this.id = id;
-    this.name = null;
+    this.name = name;
     this.type = 'Integer';
     this.default = null;
     this.auto_increment = false;
