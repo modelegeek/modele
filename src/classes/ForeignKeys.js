@@ -3,8 +3,8 @@ export default class VisualiseForeignKeys {
   constructor (from, to){
     this.from = from;
     this.to = to;
-    this.color = '#000'
-    this.d = this.calculateD()
+    this.color = '#000';
+    this.d = this.calculateD();
   }
 
   calculateD (){
@@ -62,11 +62,10 @@ export default class VisualiseForeignKeys {
   }
 
   assignCurvetoFunction (pointA, pointB, widthElement){
-
     let middleX = pointA.x + (widthElement / 2);
     let StartPoint = "M " + pointA.x + ' ' + pointA.y;
 
-    let CurvetoPoint = "Q " + middleX + ' ' + ((pointA.y + pointB.y) / 2) ;
+    let CurvetoPoint = "Q " + middleX + ' ' + ((pointA.y + pointB.y) / 2);
     let EndPoint = " " + pointB.x + ' ' + pointB.y;
 
     let d = StartPoint + CurvetoPoint + EndPoint;

@@ -127,7 +127,7 @@
       },
       removeForeign: function (){
         // foreign table_id, column_id
-        if(this.columnDetail.length == 0 || this.columnDetail.foreign.length == 0)
+        if ( this.columnDetail.length == 0 || this.columnDetail.foreign.length == 0 )
           return;
 
         // todo bug
@@ -136,6 +136,7 @@
       setForeign: function (){
         let element = this.$el;
         let table_id = this.tableDetail.id;
+        let table_name = this.tableDetail.name;
         let column_id = this.columnDetail.id;
         let databaseDetail = this.database;
 
@@ -190,6 +191,10 @@
               alert("This column already have foreign key set");
               databaseDetail.stopBroadcastForeign(foreignKeyEvent);
               return;
+            }
+
+            if ( foreignKeyEvent.set_from_table ) {
+              columnForeignDetail.setName(table_name + '_id');
             }
 
             // set up a foreign key object (child key)

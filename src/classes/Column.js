@@ -15,6 +15,10 @@ export default class Column {
     this.foreign = [];
   }
 
+  setName(name){
+    this.name = name;
+  }
+
   // for create a default id column easier
   defaultIdColumn (){
     this.name = 'id';

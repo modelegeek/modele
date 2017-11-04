@@ -57,6 +57,7 @@
 
           this.$nextTick(function (){
             let foreignKey = new ForeignKeyEvent(column, table_id)
+            foreignKey.setFromTable();
 
             Events.$emit('setForeign', foreignKey);
           })
