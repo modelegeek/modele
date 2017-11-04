@@ -54,6 +54,7 @@
       </div>
 
       <div class="form-group col-md-8 col-md-offset-4 text-right padding-right-15">
+        <button class="btn primary" @click.pervent="removeForeign" v-if="columnDetail.foreign.length > 0">Remove Foreign</button>
         <button class="btn primary" @click.pervent="setForeign">Foreign</button>
         <button class="btn primary" @click.pervent="removeColumn">Delete</button>
         <button class="btn primary" @click.pervent="updateColumn">Update</button>
@@ -124,6 +125,14 @@
           Events.$emit('setForeign', foreignKey);
         }
       },
+      removeForeign: function (){
+        // foreign table_id, column_id
+        if(this.columnDetail.length == 0 || this.columnDetail.foreign.length == 0)
+          return;
+
+        // todo bug
+        this.database.removeForeignKey(this.tableDetail.id, this.columnDetail.id, true, this.columnDetail.foreign[0]);
+      },
       setForeign: function (){
         let element = this.$el;
         let table_id = this.tableDetail.id;
@@ -168,11 +177,18 @@
 
             // find if this column have this foreign key set
             let similarForeignKey = _.find(columnForeignDetail.foreign, { 'references': column_id, 'on': table_id });
+
+            // if there is the same key will prompt error
             if ( similarForeignKey ) {
               alert("Foreign key already set");
-
               databaseDetail.stopBroadcastForeign(foreignKeyEvent);
+              return;
+            }
 
+            // if there is the same key will prompt error
+            if ( columnForeignDetail.foreign.length >= 1 ) {
+              alert("This column already have foreign key set");
+              databaseDetail.stopBroadcastForeign(foreignKeyEvent);
               return;
             }
 

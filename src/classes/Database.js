@@ -100,15 +100,17 @@ export default class Database {
   }
 
   // remove this foreign key
-  removeForeignKey (columnId, tableId){
+  removeForeignKey (tableId, columnId, single = false, foreignKey = null){
     // foreach every table
-    let foreignKeyToRemove = this.getAllRelatedKey(columnId, tableId);
-
-    console.log(foreignKeyToRemove);
+    if ( single ) {
+      this.removeSingleForeignKey(tableId, columnId, foreignKey);
+    } else {
+      this.getAllAndRemoveRelatedKey(tableId, columnId);
+    }
   }
 
   // get all related key from the table and column id
-  getAllRelatedKey (tableId, columnId = null){
+  getAllAndRemoveRelatedKey (tableId, columnId = null){
     let foreignKeyToRemove = [];
     let foreignKeys = this.foreign_keys;
 
@@ -128,7 +130,7 @@ export default class Database {
       if ( conditionFrom || conditionTo ) {
         let tableFrom = foreignKeyFrom.table_id
         let columnFrom = foreignKeyFrom.column_id
-        foreignKeyToRemove.push([tableFrom, columnFrom])
+        foreignKeyToRemove.push([tableFrom, columnFrom]);
 
         let tableTo = foreignKeyTo.table_id
         let columnTo = foreignKeyTo.column_id
@@ -157,5 +159,21 @@ export default class Database {
 
     if ( foreignKeyIndex >= 0 )
       column.foreign.splice(foreignKeyIndex, 1);
+  }
+
+  removeSingleForeignKey (tableId, columnId, foreignKey){
+    // references = column id; on = table id
+    let matchesKeyIndex = _.findIndex(this.foreign_keys, function (fk){
+      return fk.from.column_id == foreignKey.references &&
+        fk.from.table_id == foreignKey.on &&
+        fk.to.column_id == columnId &&
+        fk.to.table_id == tableId;
+    });
+
+    if ( matchesKeyIndex >= 0) {
+      this.foreign_keys.splice(matchesKeyIndex, 1);
+    }
+
+    this.findAndRemoveForeignKey(tableId, foreignKey.on, columnId, foreignKey.references);
   }
 }
