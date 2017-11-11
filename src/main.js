@@ -9,7 +9,7 @@ window.Events = new Vue({});
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
+  el: '#database',
   template: '<App/>',
   components: { App }
 });
@@ -36,7 +36,7 @@ Vue.directive('draggable', {
     function mouseMove (e){
       let dx = e.clientX - initialMouseX;
       let dy = e.clientY - initialMouseY;
-      let tableDetail = binding.value.tableDetail;
+      let tableDetail = binding.value.table;
       database.redrawForeignKeys();
       tableDetail.y = startY + dy;
       tableDetail.x = startX + dx;

@@ -1,18 +1,18 @@
 <template>
   <div class="column-detail-box container-fluid" @click.pervent="linkForeign">
     <div class="row">
-      <div :class="{ hidden: columnDetail.formHidden == false ? true :false }" @dblclick="showColumnForm" class="highlight-none column col-md-12">
-        <p class="col-md-6 text-left">{{columnDetail.name}}</p>
-        <p class="col-md-6 text-right">{{columnDetail.type}}</p>
+      <div :class="{ hidden: column.formHidden == false ? true :false }" @dblclick="showColumnForm" class="highlight-none column col-md-12">
+        <p class="col-md-6 text-left">{{column.name}}</p>
+        <p class="col-md-6 text-right">{{column.type}}</p>
       </div>
     </div>
 
 
-    <div class="row form column padding-bottom-10" :class="{ hidden: columnDetail.formHidden}">
+    <div class="row form column padding-bottom-10" :class="{ hidden: column.formHidden}">
       <div class="col-md-12 form-group">
         <label class="col-md-4">Name</label>
         <div class="col-md-8">
-          <input class="form-control" type="text" v-model="columnDetail.name" :value="columnDetail.name" @keyup.enter="updateColumn"/>
+          <input class="form-control" type="text" v-model="column.name" :value="column.name" @keyup.enter="updateColumn"/>
         </div>
       </div>
 
@@ -20,7 +20,7 @@
       <div class="col-md-12 form-group">
         <label class="col-md-4">Type</label>
         <div class="col-md-8">
-          <select class="form-control" v-model="columnDetail.type">
+          <select class="form-control" v-model="column.type">
             <optgroup :label="dataType.name" v-for="(dataType, index) in dataTypes">
               <option v-for="(type, index) in dataType.types" v-bind:value=type>{{type}}</option>
             </optgroup>
@@ -31,30 +31,30 @@
       <div class="col-md-12 form-group">
         <label class="col-md-4">Default</label>
         <div class="col-md-8">
-          <input class="form-control" type="text" v-model="columnDetail.default" :value="columnDetail.default" @keyup.enter="updateColumn"/>
+          <input class="form-control" type="text" v-model="column.default" :value="column.default" @keyup.enter="updateColumn"/>
         </div>
       </div>
 
       <div class="small-row col-md-8 col-md-offset-4">
         <div class="col-md-6">
-          A_I <input type="checkbox" :checked="columnDetail.auto_increment" v-model="columnDetail.auto_increment"/>
+          A_I <input type="checkbox" :checked="column.auto_increment" v-model="column.auto_increment"/>
         </div>
 
         <div class="col-md-6">
-          N/A <input type="checkbox" :checked="columnDetail.nullable" v-model="columnDetail.nullable"/>
+          N/A <input type="checkbox" :checked="column.nullable" v-model="column.nullable"/>
         </div>
 
         <div class="col-md-6">
-          Unique <input type="checkbox" :checked="columnDetail.unique" v-model="columnDetail.unique"/>
+          Unique <input type="checkbox" :checked="column.unique" v-model="column.unique"/>
         </div>
 
         <div class="col-md-6">
-          Primary <input type="checkbox" :checked="columnDetail.primary_key" v-model="columnDetail.primary_key"/>
+          Primary <input type="checkbox" :checked="column.primary_key" v-model="column.primary_key"/>
         </div>
       </div>
 
       <div class="form-group col-md-8 col-md-offset-4 text-right padding-right-15">
-        <button class="btn primary" @click.pervent="removeForeign" v-if="columnDetail.foreign.length > 0">Remove Foreign</button>
+        <button class="btn primary" @click.pervent="removeForeign" v-if="column.foreign.length > 0">Remove Foreign</button>
         <button class="btn primary" @click.pervent="setForeign">Foreign</button>
         <button class="btn primary" @click.pervent="removeColumn">Delete</button>
         <button class="btn primary" @click.pervent="updateColumn">Update</button>
@@ -70,74 +70,94 @@
   import ForeignKeys from "../classes/ForeignKeys";
   import ForeignKeyEvent from "../interface/ForeignKeyEvent";
   import _ from "lodash";
+  import Column from "../classes/Column";
+  import Table from "../classes/Table";
+  import Database from "../classes/Database";
 
   export default {
-    name: 'table-column',
-    props: [
-      'columnDetail',
-      'tableDetail',
-      'database',
-      'index'
-    ],
+    name: 'modele-column',
+
+    props: {
+      'column':{
+        type: Column,
+        required: true,
+      },
+      'table':{
+        type: Table,
+        required: true,
+      },
+      'database':{
+        type: Database,
+        required: true,
+      },
+      'index':{
+        type: Number,
+        required: true,
+      }
+    },
+
     data (){
       return {
         dataTypes: new DataType().getAllType(),
       }
     },
+
     updated: function (){
       this.database.redrawForeignKeys();
     },
+
     mounted: function (){
       let element = this.$el;
 
-      this.columnDetail.element = element;
+      this.column.element = element;
     },
+
     methods: {
       updateColumn: function (){
-        let column = this.columnDetail;
+        let column = this.column;
         if ( column.name == '' || column.name == null ) {
           alert('Column name cannot be empty');
           return false;
         }
 
-        if ( this.tableDetail.getSameColumnName(column.name) >= 1 ) {
+        if ( this.table.getSameColumnName(column.name) >= 1 ) {
           alert('Table cannot have same column name');
           return;
         }
 
-        this.columnDetail.formHidden = true;
+        this.column.formHidden = true;
 
       },
       showColumnForm: function (){
-        this.columnDetail.formHidden = false;
+        this.column.formHidden = false;
       },
       removeColumn: function (){
-        this.tableDetail.removeColumn(this.index, this.database, this.columnDetail.id)
+        this.table.removeColumn(this.index, this.database, this.column.id)
       },
       linkForeign: function (){
-        let table_id = this.tableDetail.id;
+        let table_id = this.table.id;
 
         // if foreign broadcasting is on will trigger the custom function instead of
         // create a function to broadcast again
         if ( this.database.foreign_broadcasting ) {
-          let foreignKey = new ForeignKeyEvent(this.columnDetail, table_id)
+          let foreignKey = new ForeignKeyEvent(this.column, table_id)
 
           Events.$emit('setForeign', foreignKey);
         }
       },
       removeForeign: function (){
         // foreign table_id, column_id
-        if ( this.columnDetail.length == 0 || this.columnDetail.foreign.length == 0 )
+        if ( this.column.length == 0 || this.column.foreign.length == 0 )
           return;
 
         // todo bug
-        this.database.removeForeignKey(this.tableDetail.id, this.columnDetail.id, true, this.columnDetail.foreign[0]);
+        this.database.removeForeignKey(this.table.id, this.column.id, true, this.column.foreign[0]);
       },
       setForeign: function (){
         let element = this.$el;
-        let table_id = this.tableDetail.id;
-        let table_name = this.tableDetail.name;
-        let column_id = this.columnDetail.id;
+        let table_id = this.table.id;
+        let table_name = this.table.name;
+        let column_id = this.column.id;
         let databaseDetail = this.database;
 
         // if foreign broadcasting is on will trigger the custom function instead of
@@ -145,7 +165,7 @@
         if ( this.database.foreign_broadcasting ) {
 
           // set up a foreign key object
-          let foreignKey = new ForeignKeyEvent(this.columnDetail, table_id)
+          let foreignKey = new ForeignKeyEvent(this.column, table_id)
 
           // return setForeign method
           Events.$emit('setForeign', foreignKey);
@@ -153,7 +173,7 @@
         } else {
 
           // if parent key is not primary key or unique key will return error
-          if ( this.columnDetail.primary_key == false && this.columnDetail.unique == false ) {
+          if ( this.column.primary_key == false && this.column.unique == false ) {
             alert('Column must be primary key to be a parent key');
 
             return;

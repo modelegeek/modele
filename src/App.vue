@@ -7,40 +7,43 @@
             :stroke="foreignKey.color"
             :d="foreignKey.d"
             fill="none"
-            ></path>
+      ></path>
     </svg>
 
     <table-menu v-on:createTable="appendTableWithButton" :database="database" style="z-index: 1"></table-menu>
 
-    <div is="sql-table"
+    <div is="modele-table"
          v-for="(table, index) in database.tables"
          :database="database"
          :index="index"
          :key="table.id"
-         :tableDetail="table"
+         :table="table"
          :style="{top: table.y + 'px' , left: table.x + 'px' }"
     ></div>
   </div>
 </template>
 
 <script>
-  import SqlTable from './components/SqlTable';
+  import ModeleTable from './components/ModeleTable';
   import TableMenu from './components/TableMenu';
   import Database from "./classes/Database";
 
   let database = new Database();
 
   export default {
-    name: 'app',
+    name: 'database',
+
     components: {
-      SqlTable,
-      TableMenu,
+      'modele-table': ModeleTable,
+      'table-menu': TableMenu,
     },
+
     data (){
       return {
         database: database,
       }
     },
+
     methods: {
       appendTable: function (){
         this.database.appendTable();

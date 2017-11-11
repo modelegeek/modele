@@ -1,21 +1,21 @@
 <template>
-  <div class="sql-table" v-draggable="{tableDetail: tableDetail, database: database}">
+  <div class="sql-table" v-draggable="{table: table, database: database}">
 
     <div class="table-name highlight-none" @click.pervent="tableLinkForeign">
-      <p :class="{ hidden: isHidden}" @dblclick="showForm">{{tableDetail.name}}</p>
+      <p :class="{ hidden: isHidden}" @dblclick="showForm">{{table.name}}</p>
       <div class="table-name-form" :class="{ hidden: isFormHidden}">
-        <input type="text" v-model="tableDetail.name" @keyup.enter="submitTableName" v-focus/>
+        <input type="text" v-model="table.name" @keyup.enter="submitTableName" v-focus/>
         <span @click="removeTable"> x </span>
       </div>
     </div>
 
-    <div is="table-column"
-         v-for="(column, index) in tableDetail.columns"
+    <div is="modele-column"
+         v-for="(column, index) in table.columns"
          :key="column.id"
          :index="index"
-         :tableDetail="tableDetail"
+         :table="table"
          :database="database"
-         :columnDetail="column">
+         :column="column">
     </div>
 
     <div class="highlight-none" @click.prevent="addColumn">
@@ -28,32 +28,48 @@
 <script>
   // component
   import Vue from "vue";
-  import TableColumn from './TableColumn';
+  import ModeleColumn from './ModeleColumn';
+
   import ForeignKey from "../interface/ForeignKey";
   import ForeignKeyEvent from "../interface/ForeignKeyEvent";
+  import Table from "../classes/Table";
+  import Database from "../classes/Database";
 
   export default {
-    name: 'sql-table',
-    props: [
-      'tableDetail',
-      'database',
-      'index'
-    ],
-    components: {
-      TableColumn
+    name: 'modele-table',
+
+    props: {
+      table: {
+        type: Table,
+        required: true,
+      },
+      database: {
+        type: Database,
+        required: true,
+      },
+      index: {
+        type: Number,
+        required: true,
+      }
     },
+
+    components: {
+      'modele-column': ModeleColumn
+    },
+
     data (){
       return {
         isHidden: true,
         isFormHidden: false,
       }
     },
+
     methods: {
       tableLinkForeign: function (){
-        let table_id = this.tableDetail.id;
+        let table_id = this.table.id;
 
         if ( this.database.foreign_broadcasting ) {
-          let column = this.tableDetail.addColumn();
+          let column = this.table.addColumn();
 
           this.$nextTick(function (){
             let foreignKey = new ForeignKeyEvent(column, table_id)
@@ -64,7 +80,7 @@
         }
       },
       submitTableName: function (){
-        let tableName = this.tableDetail.name;
+        let tableName = this.table.name;
 
         if ( tableName == '' ) {
           alert('table name cannot be empty');
@@ -84,7 +100,7 @@
         this.isFormHidden = false;
       },
       addColumn: function (){
-        this.tableDetail.addColumn();
+        this.table.addColumn();
       },
       removeTable: function (){
         this.database.removeTable(this.index);

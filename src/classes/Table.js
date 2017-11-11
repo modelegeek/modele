@@ -1,7 +1,7 @@
 import Column from "./Column";
 import Helper from "./Helper";
 
-export default class TableDetails {
+export default class Table {
 
   // construct a new table
   constructor (id, clientX, clientY){

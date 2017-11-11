@@ -1,4 +1,4 @@
-import TableDetails from "./TableDetails";
+import TableDetails from "./Table";
 import Helper from "./Helper";
 import _ from "lodash";
 
