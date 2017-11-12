@@ -48,6 +48,9 @@
         isFormHidden: false,
       }
     },
+    mounted(){
+      console.log(this.database);
+    },
     methods: {
       tableLinkForeign: function (){
         let table_id = this.tableDetail.id;

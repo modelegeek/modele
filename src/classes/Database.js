@@ -90,6 +90,7 @@ export default class Database {
   }
 
   redrawForeignKeys (){
+    // console.log(this.foreign_keys);
     for ( let foreignKey of this.foreign_keys ) {
       foreignKey.d = foreignKey.calculateD()
     }
@@ -138,13 +139,7 @@ export default class Database {
   }
 
   findAndRemoveForeignKey (tableId, foreignTableId, columnId = null, foreignColumnId = null){
-    let table = _.find(this.tables, function (table){
-      return table.id == tableId;
-    });
-
-    let column = _.find(table.columns, function (column){
-      return column.id == columnId;
-    });
+    this.getTableColumn(tableId, columnId);
 
     let foreignKeyIndex = _.findIndex(column.foreign, { 'references': foreignColumnId, 'on': foreignTableId });
 
@@ -156,5 +151,17 @@ export default class Database {
     this.tables = loadedData.tables;
     this.foreign_keys = loadedData.foreign_keys;
     this.next_table_id = loadedData.next_table_id;
+  }
+
+  getTableColumn (tableId, columnId){
+    let table = _.find(this.tables, function (table){
+      return table.id == tableId;
+    });
+
+    let column = _.find(table.columns, function (column){
+      return column.id == columnId;
+    });
+
+    return column;
   }
 }
