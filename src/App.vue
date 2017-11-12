@@ -10,7 +10,7 @@
       ></path>
     </svg>
 
-    <table-menu v-on:createTable="appendTableWithButton" :database="database" style="z-index: 1"></table-menu>
+    <table-menu :database="database"></table-menu>
 
     <div is="modele-table"
          v-for="(table, index) in database.tables"
@@ -25,7 +25,7 @@
 
 <script>
   import ModeleTable from './components/ModeleTable';
-  import TableMenu from './components/TableMenu';
+  import TableMenu from './components/ModeleMenu';
   import Database from "./classes/Database";
 
   let database = new Database();
@@ -46,10 +46,8 @@
 
     methods: {
       appendTable: function (){
-        this.database.appendTable();
-      },
-      appendTableWithButton: function (){
-        this.database.appendTableWithButton();
+        // true mean it have provide a position
+        this.database.appendTable(true);
       }
     }
   }

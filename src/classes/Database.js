@@ -54,22 +54,7 @@ export default class Database {
   }
 
   // add new table to this database design
-  appendTable (){
-    if ( this.getNullTables() >= 1 ) {
-      alert('please fill in all table name to continue');
-      return;
-    }
-
-    let table_id = this.next_table_id;
-
-    let tableDetail = new TableDetails(table_id, event.clientX, event.clientY);
-
-    this.next_table_id++;
-
-    this.tables.push(tableDetail);
-  }
-
-  appendTableWithButton (){
+  appendTable (position = false){
     if ( this.getNullTables() >= 1 ) {
       alert('please fill in all table name to continue');
       return;
@@ -78,6 +63,10 @@ export default class Database {
     let table_id = this.next_table_id;
 
     let tableDetail = new TableDetails(table_id, 0, 0);
+
+    if ( position ) {
+      tableDetail = new TableDetails(table_id, event.clientX, event.clientY);
+    }
 
     this.next_table_id++;
 
@@ -170,7 +159,7 @@ export default class Database {
         fk.to.table_id == tableId;
     });
 
-    if ( matchesKeyIndex >= 0) {
+    if ( matchesKeyIndex >= 0 ) {
       this.foreign_keys.splice(matchesKeyIndex, 1);
     }
 
