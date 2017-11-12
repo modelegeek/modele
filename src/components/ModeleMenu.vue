@@ -8,22 +8,27 @@
 </template>
 
 <script>
+  import Database from "../classes/Database";
+
   export default {
     name: 'table-menu',
-    props: ['database'],
-    components: {},
-    data (){
-      return {
-        isHidden: false,
-        isFormHidden: false,
+
+    props: {
+      database: {
+        type: Database
       }
     },
+
+    data (){
+      return {}
+    },
+
     methods: {
       createTable: function (){
-        this.$emit('createTable')
+        this.database.appendTable();
       },
-      saveTable: function(){
-        localStorage.setItem('test',JSON.stringify(this.database))
+      saveTable: function (){
+        localStorage.setItem('test', JSON.stringify(this.database))
         console.log(localStorage.getItem('test'));
       },
     }
