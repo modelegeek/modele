@@ -4,12 +4,13 @@ export default class VisualiseForeignKeys {
     this.from = from;
     this.to = to;
     this.color = '#000';
-    this.d = this.calculateD()
+    this.d = this.calculateD();
   }
 
   calculateD (){
     let fromElement = this.from.element;
     let toElement = this.to.element;
+
     // should have the same width
     let widthElement = fromElement.offsetWidth;
 
@@ -61,7 +62,6 @@ export default class VisualiseForeignKeys {
   }
 
   assignCurvetoFunction (pointA, pointB, widthElement){
-
     let middleX = pointA.x + (widthElement / 2);
     let StartPoint = "M " + pointA.x + ' ' + pointA.y;
 
@@ -74,7 +74,6 @@ export default class VisualiseForeignKeys {
   }
 
   assignCubicFunction (pointA, pointB){
-
     let middleX = (pointA.x + pointB.x) / 2;
     let StartPoint = "M " + pointA.x + ' ' + pointA.y;
 
@@ -86,5 +85,4 @@ export default class VisualiseForeignKeys {
 
     return d;
   }
-
 }

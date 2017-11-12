@@ -1,4 +1,4 @@
-import TableDetails from "./TableDetails";
+import TableDetails from "./Table";
 import Helper from "./Helper";
 import _ from "lodash";
 
@@ -16,8 +16,11 @@ export default class Database {
     this.foreign_broadcasting = true;
   }
 
-  stopBroadcastForeign (){
+  stopBroadcastForeign (foreignKeyEvent){
     this.foreign_broadcasting = false;
+
+    // close the event in it successful setup
+    Events.$off(['setForeign', foreignKeyEvent]);
   }
 
   // get all null tables count
@@ -89,6 +92,7 @@ export default class Database {
     }
   }
 
+  // redraw foreign key
   redrawForeignKeys (){
     // console.log(this.foreign_keys);
     for ( let foreignKey of this.foreign_keys ) {
@@ -96,14 +100,18 @@ export default class Database {
     }
   }
 
-  removeForeignKey (columnId, tableId){
+  // remove this foreign key
+  removeForeignKey (tableId, columnId, single = false, foreignKey = null){
     // foreach every table
-    let foreignKeyToRemove = this.getAllRelatedKey(columnId, tableId);
-
-    console.log(foreignKeyToRemove);
+    if ( single ) {
+      this.removeSingleForeignKey(tableId, columnId, foreignKey);
+    } else {
+      this.getAllAndRemoveRelatedKey(tableId, columnId);
+    }
   }
 
-  getAllRelatedKey (tableId, columnId = null){
+  // get all related key from the table and column id
+  getAllAndRemoveRelatedKey (tableId, columnId = null){
     let foreignKeyToRemove = [];
     let foreignKeys = this.foreign_keys;
 
@@ -123,7 +131,7 @@ export default class Database {
       if ( conditionFrom || conditionTo ) {
         let tableFrom = foreignKeyFrom.table_id
         let columnFrom = foreignKeyFrom.column_id
-        foreignKeyToRemove.push([tableFrom, columnFrom])
+        foreignKeyToRemove.push([tableFrom, columnFrom]);
 
         let tableTo = foreignKeyTo.table_id
         let columnTo = foreignKeyTo.column_id
@@ -138,6 +146,7 @@ export default class Database {
     return foreignKeyToRemove;
   }
 
+  // find and remove certain foreign key
   findAndRemoveForeignKey (tableId, foreignTableId, columnId = null, foreignColumnId = null){
     this.getTableColumn(tableId, columnId);
 
@@ -163,5 +172,21 @@ export default class Database {
     });
 
     return column;
+  }
+
+  removeSingleForeignKey (tableId, columnId, foreignKey){
+    // references = column id; on = table id
+    let matchesKeyIndex = _.findIndex(this.foreign_keys, function (fk){
+      return fk.from.column_id == foreignKey.references &&
+        fk.from.table_id == foreignKey.on &&
+        fk.to.column_id == columnId &&
+        fk.to.table_id == tableId;
+    });
+
+    if ( matchesKeyIndex >= 0) {
+      this.foreign_keys.splice(matchesKeyIndex, 1);
+    }
+
+    this.findAndRemoveForeignKey(tableId, foreignKey.on, columnId, foreignKey.references);
   }
 }
