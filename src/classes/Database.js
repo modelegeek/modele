@@ -12,10 +12,12 @@ export default class Database {
     this.foreign_broadcasting = null;
   }
 
+  // set broadcasting to true as a flag
   broadcastForeign (){
     this.foreign_broadcasting = true;
   }
 
+  // stop broadcasting and remove the event
   stopBroadcastForeign (foreignKeyEvent){
     this.foreign_broadcasting = false;
 
@@ -24,7 +26,6 @@ export default class Database {
   }
 
   // get all null tables count
-  // currently is just for checking only
   getNullTables (){
     let countNull = 0
 
@@ -137,7 +138,7 @@ export default class Database {
 
   // find and remove certain foreign key
   findAndRemoveForeignKey (tableId, foreignTableId, columnId = null, foreignColumnId = null){
-    this.getTableColumn(tableId, columnId);
+    let column = this.getTableColumn(tableId, columnId);
 
     let foreignKeyIndex = _.findIndex(column.foreign, { 'references': foreignColumnId, 'on': foreignTableId });
 

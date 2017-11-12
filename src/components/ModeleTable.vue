@@ -1,7 +1,7 @@
 <template>
   <div class="sql-table" v-draggable="{table: table, database: database}">
 
-    <div class="table-name highlight-none" @click.pervent="tableLinkForeign">
+    <div class="table-name highlight-none" @click.pervent="setForeign">
       <p :class="{ hidden: isHidden}" @dblclick="showForm">{{table.name}}</p>
       <div class="table-name-form" :class="{ hidden: isFormHidden}">
         <input type="text" v-model="table.name" @keyup.enter="submitTableName" v-focus/>
@@ -30,8 +30,7 @@
   import Vue from "vue";
   import ModeleColumn from './ModeleColumn';
 
-  import ForeignKey from "../interface/ForeignKey";
-  import ForeignKeyEvent from "../interface/ForeignKeyEvent";
+  import ForeignKey from "../interface/ForeignKeyInterface";
   import Table from "../classes/Table";
   import Database from "../classes/Database";
 
@@ -63,33 +62,21 @@
         isFormHidden: false,
       }
     },
-    mounted(){
-      console.log(this.database);
-    },
+
     methods: {
-      tableLinkForeign: function (){
-        let table_id = this.table.id;
-
+      setForeign: function (){
         if ( this.database.foreign_broadcasting ) {
-          let column = this.table.addColumn();
-
-          this.$nextTick(function (){
-            let foreignKey = new ForeignKeyEvent(column, table_id)
-            foreignKey.setFromTable();
-
-            Events.$emit('setForeign', foreignKey);
-          })
+          this.table.setForeignKey(this);
         }
       },
+
       submitTableName: function (){
         let tableName = this.table.name;
 
         if ( tableName == '' ) {
           alert('table name cannot be empty');
           return;
-        }
-
-        if ( this.database.getSameTableName(tableName) > 1 ) {
+        } else if ( this.database.getSameTableName(tableName) > 1 ) {
           alert('Table cannot have same column name');
           return;
         }
@@ -97,13 +84,16 @@
         this.isHidden = false;
         this.isFormHidden = true;
       },
+
       showForm: function (){
         this.isHidden = true;
         this.isFormHidden = false;
       },
+
       addColumn: function (){
         this.table.addColumn();
       },
+
       removeTable: function (){
         this.database.removeTable(this.index);
       }

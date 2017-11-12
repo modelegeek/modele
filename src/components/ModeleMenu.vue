@@ -10,7 +10,7 @@
 <script>
 
   import Database from "../classes/Database";
-  import ForeignKeys from "../classes/ForeignKeys";
+  import ForeignKeys from "../classes/ForeignKey";
 
   export default {
     name: 'table-menu',

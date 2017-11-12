@@ -1,4 +1,4 @@
-export default class ForeignKeyEvent {
+export default class ForeignKeyEventInterface {
   constructor (columnDetail, table_id, column_id){
     this.columnDetail = columnDetail;
     this.table_id = table_id;

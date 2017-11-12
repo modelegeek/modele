@@ -1,3 +1,6 @@
+import ForeignKeyEventInterface from "../interface/ForeignKeyEventInterface";
+import ForeignKeyEvent from "../Event/ForeignKeyEvent";
+
 export default class Column {
 
   // construct a new column types
@@ -15,7 +18,7 @@ export default class Column {
     this.foreign = [];
   }
 
-  setName(name){
+  setName (name){
     this.name = name;
   }
 
@@ -31,11 +34,45 @@ export default class Column {
     return this;
   }
 
-  setForeignKey(table_id, column_id){
+  // insert foreign key in this column
+  insertForeignKey (table_id, column_id){
     let foreignKey = {}
     foreignKey.references = column_id;
     foreignKey.on = table_id;
 
     this.foreign.push(foreignKey);
   }
+
+  // trigger set foreign event
+  setForeignKeyEvent (tableId){
+    let foreignKey = new ForeignKeyEventInterface(this, tableId)
+
+    Events.$emit('setForeign', foreignKey);
+  }
+
+  // broadcast foreign key event
+  broadcastForeignKeyEvent (element, tableId, tableName, database){
+    let columnId = this.id;
+
+    // if parent key is not primary key or unique key will return error
+    if ( this.primary_key == false && this.unique == false ) {
+      alert('Column must be primary key to be a parent key');
+
+      return false;
+    }
+
+    // listening method for setForeign key method
+    Events.$on('setForeign', function (foreignKeyEvent){
+      let foreignKeyEventClass = new ForeignKeyEvent(foreignKeyEvent);
+
+      if ( !foreignKeyEventClass.checkIfIsSelf(tableId, columnId) ) return;
+
+      if ( !foreignKeyEventClass.checkIfHaveSameForeignKey(columnId, tableId, database) ) return;
+
+      foreignKeyEventClass.setForeign(element, database, tableId, tableName, columnId);
+    })
+
+    database.broadcastForeign();
+  }
+
 }

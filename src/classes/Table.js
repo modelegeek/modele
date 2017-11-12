@@ -1,5 +1,6 @@
 import Column from "./Column";
 import Helper from "./Helper";
+import ForeignKeyEventInterface from "../interface/ForeignKeyEventInterface";
 
 export default class Table {
 
@@ -106,5 +107,20 @@ export default class Table {
     database.removeForeignKey(this.id, column_id);
 
     this.columns.splice(index, 1);
+  }
+
+  // set foreign key with table
+  setForeignKey(vue){
+    let column = this.addColumn();
+    let tableId = this.id;
+
+    vue.$nextTick(function (){
+      let foreignKey = new ForeignKeyEventInterface(column, tableId);
+
+      // set a flag to let column know this new column is needed to append table name
+      foreignKey.setFromTable();
+
+      Events.$emit('setForeign', foreignKey);
+    })
   }
 }

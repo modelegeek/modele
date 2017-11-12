@@ -1,4 +1,4 @@
-export default class ForeignKey {
+export default class ForeignKeyInterface {
   constructor (element, type, table_id, column_id){
     this.element = element
     this.type = type;
