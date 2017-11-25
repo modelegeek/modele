@@ -1,4 +1,4 @@
-import TableDetails from "./Table";
+import Table from "./Table";
 import Helper from "./Helper";
 import _ from "lodash";
 
@@ -8,8 +8,26 @@ export default class Database {
   constructor (tables = [], foreign_keys = []){
     this.tables = tables;
     this.foreign_keys = foreign_keys;
+
+    if ( tables.length >= 1 ) {
+      this.assignTableClass(tables);
+    }
+
+    if ( foreign_keys.length >= 1 ) {
+      this.assignForeignKeyClass(foreign_keys);
+    }
+
     this.next_table_id = 1;
     this.foreign_broadcasting = null;
+  }
+
+  assignTableClass (tables){
+    for ( let table of tables ) {
+      let tableObj = new Table(table.id, table.x, table.y, false);
+      tableObj.setTableData(table);
+
+      this.tables.push(tableObj);
+    }
   }
 
   // set broadcasting to true as a flag
@@ -63,10 +81,10 @@ export default class Database {
 
     let table_id = this.next_table_id;
 
-    let tableDetail = new TableDetails(table_id, 0, 0);
+    let tableDetail = new Table(table_id, 0, 0);
 
     if ( position ) {
-      tableDetail = new TableDetails(table_id, event.clientX, event.clientY);
+      tableDetail = new Table(table_id, event.clientX, event.clientY);
     }
 
     this.next_table_id++;
@@ -147,7 +165,7 @@ export default class Database {
   }
 
   loadData (loadedData){
-    this.tables = loadedData.tables;
+    this.assignTableClass(loadedData.tables);
     this.foreign_keys = loadedData.foreign_keys;
     this.next_table_id = loadedData.next_table_id;
   }

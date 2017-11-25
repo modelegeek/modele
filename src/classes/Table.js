@@ -5,17 +5,35 @@ import ForeignKeyEventInterface from "../interface/ForeignKeyEventInterface";
 export default class Table {
 
   // construct a new table
-  constructor (id, clientX, clientY){
+  constructor (id, clientX, clientY, defaultCol = true){
     this.x = clientX;
     this.y = clientY;
     this.id = id;
     this.name = "";
     this.next_column_id = 1;
-    this.columns = [
-      this.addDefaultColumn()
-    ];
+    this.columns = [];
+    if ( defaultCol ) {
+      this.columns = [
+        this.addDefaultColumn()
+      ];
+    }
 
     return this;
+  }
+
+  setTableData (table){
+    this.name = table.name;
+    this.next_column_id = table.next_column_id;
+    this.setColumn(table.columns);
+  }
+
+  setColumn (columns){
+    for ( let column of columns ) {
+      let columnObj = new Column(column.id, column.name);
+      columnObj.setData(column);
+
+      this.columns.push(columnObj);
+    }
   }
 
   // add column to this current table with id increment
@@ -110,7 +128,7 @@ export default class Table {
   }
 
   // set foreign key with table
-  setForeignKey(vue){
+  setForeignKey (vue){
     let column = this.addColumn();
     let tableId = this.id;
 

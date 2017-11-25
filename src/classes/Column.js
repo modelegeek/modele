@@ -18,6 +18,18 @@ export default class Column {
     this.foreign = [];
   }
 
+  setData(column){
+    this.type = column.type;
+    this.default = column.default;
+    this.auto_increment = column.auto_increment;
+    this.nullable = column.nullable;
+    this.unique = column.unique;
+    this.primary_key = column.primary_key;
+    this.element = column.element;
+    this.formHidden = column.formHidden;
+    this.foreign = column.foreign;
+  }
+
   setName (name){
     this.name = name;
   }

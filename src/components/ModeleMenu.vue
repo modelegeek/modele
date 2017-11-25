@@ -30,9 +30,6 @@
         this.database.appendTable();
       },
       saveTable: function (){
-        localStorage.setItem('test', JSON.stringify(this.database))
-        console.log(localStorage.getItem('test'));
-
         let database = this.database;
         for ( let object of database.foreign_keys ) {
           delete object.from.element;
@@ -44,6 +41,7 @@
             delete column.element;
           }
         }
+
         localStorage.setItem('test', JSON.stringify(database));
       },
       loadTable: function (){

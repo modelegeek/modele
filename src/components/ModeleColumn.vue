@@ -16,7 +16,6 @@
         </div>
       </div>
 
-
       <div class="col-md-12 form-group">
         <label class="col-md-4">Type</label>
         <div class="col-md-8">
@@ -161,7 +160,6 @@
           this.column.broadcastForeignKeyEvent(element, tableId, tableName, database)
         }
       }
-
     }
   }
 </script>
