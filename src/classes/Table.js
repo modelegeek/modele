@@ -10,6 +10,7 @@ export default class Table {
     this.y = clientY;
     this.id = id;
     this.name = "";
+    this.form_hidden = false;
     this.next_column_id = 1;
     this.columns = [];
     if ( defaultCol ) {
@@ -24,6 +25,7 @@ export default class Table {
   setTableData (table){
     this.name = table.name;
     this.next_column_id = table.next_column_id;
+    this.form_hidden = table.form_hidden;
     this.setColumn(table.columns);
   }
 

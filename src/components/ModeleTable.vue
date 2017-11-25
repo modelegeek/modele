@@ -2,8 +2,8 @@
   <div class="sql-table" v-draggable="{table: table, database: database}">
 
     <div class="table-name highlight-none" @click.pervent="setForeign">
-      <p :class="{ hidden: isHidden}" @dblclick="showForm">{{table.name}}</p>
-      <div class="table-name-form" :class="{ hidden: isFormHidden}">
+      <p v-show="table.form_hidden" @dblclick="showForm">{{table.name}}</p>
+      <div class="table-name-form" v-show="table.form_hidden == false">
         <input type="text" v-model="table.name" @keyup.enter="submitTableName" v-focus/>
         <span @click="removeTable"> x </span>
       </div>
@@ -57,10 +57,7 @@
     },
 
     data (){
-      return {
-        isHidden: true,
-        isFormHidden: false,
-      }
+      return {}
     },
 
     methods: {
@@ -81,13 +78,11 @@
           return;
         }
 
-        this.isHidden = false;
-        this.isFormHidden = true;
+        this.table.form_hidden = true;
       },
 
       showForm: function (){
-        this.isHidden = true;
-        this.isFormHidden = false;
+        this.table.form_hidden = false;
       },
 
       addColumn: function (){
