@@ -66,10 +66,11 @@
       </div>
 
       <div class="form-group col-md-8 col-md-offset-4 text-right padding-right-15">
-        <p v-if="column.foreign.length > 0">
-          <button class="btn btn-link" @click.pervent="removeForeign">Remove Foreign</button>
+        <p>
+          <button class="btn btn-link" @click.pervent="removeForeign" v-if="column.foreign.length > 0">Remove Foreign</button>
+          <button class="btn btn-link" @click.pervent="setForeign" v-if="!column.foreign.length"> Set Foreign</button>
         </p>
-        <button class="btn btn-link" @click.pervent="setForeign" v-if="!column.foreign.length">Foreign</button>
+
         <button class="btn btn-primary text-light" @click.pervent="updateColumn">Update</button>
         <button class="btn btn-danger" @click.pervent="removeColumn">Delete</button>
       </div>

@@ -52,9 +52,14 @@
   width: 100%;
   position: absolute;
   display: flex;
+  z-index: auto;
 }
 
 .highlight-none {
   @include user-select(none);
   background-color: $white;
+}
+
+.function-menu{
+  position: relative;
 }

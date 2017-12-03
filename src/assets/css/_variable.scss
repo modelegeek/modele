@@ -30,6 +30,7 @@ $grays: map-merge((
 ), $grays);
 
 // ==== theme colors ==== //
+$theme-bg: $gray-100;
 $black: #000 !default;
 $blue: #7babf3 !default;
 $indigo: #6610f2 !default;
