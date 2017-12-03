@@ -28,7 +28,7 @@ Vue.directive('focus', {
 
 Vue.directive('draggable', {
   bind: function (el, binding){
-    el.style.position = 'absolute';
+
     let startX, startY, initialMouseX, initialMouseY;
 
     let database = binding.value.database;
@@ -49,8 +49,8 @@ Vue.directive('draggable', {
     }
 
     el.addEventListener('mousedown', function (e){
-      startX = el.offsetLeft;
-      startY = el.offsetTop;
+      startX = binding.value.table.x;
+      startY = binding.value.table.y;
       initialMouseX = e.clientX;
       initialMouseY = e.clientY;
       document.addEventListener('mousemove', mouseMove);
