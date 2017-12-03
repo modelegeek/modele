@@ -34,29 +34,44 @@
         </div>
       </div>
 
-      <div class="small-row col-md-8 col-md-offset-4">
+      <div class="small-row">
+
         <div class="col-md-6">
-          A_I <input type="checkbox" :checked="column.auto_increment" v-model="column.auto_increment"/>
+          <label class="checkbox">
+            <span>A_I</span>
+            <input type="checkbox" :checked="column.auto_increment" v-model="column.auto_increment"/>
+          </label>
         </div>
 
         <div class="col-md-6">
-          N/A <input type="checkbox" :checked="column.nullable" v-model="column.nullable"/>
+          <label class="checkbox">
+            <span>N/A</span>
+            <input type="checkbox" :checked="column.nullable" v-model="column.nullable"/>
+          </label>
         </div>
 
         <div class="col-md-6">
-          Unique <input type="checkbox" :checked="column.unique" v-model="column.unique"/>
+          <label class="checkbox">
+            <span>Unique</span>
+            <input type="checkbox" :checked="column.unique" v-model="column.unique"/>
+          </label>
         </div>
 
         <div class="col-md-6">
-          Primary <input type="checkbox" :checked="column.primary_key" v-model="column.primary_key"/>
+          <label class="checkbox">
+            <span>Primary</span>
+            <input type="checkbox" :checked="column.primary_key" v-model="column.primary_key"/>
+          </label>
         </div>
       </div>
 
       <div class="form-group col-md-8 col-md-offset-4 text-right padding-right-15">
-        <button class="btn primary" @click.pervent="removeForeign" v-if="column.foreign.length > 0">Remove Foreign</button>
-        <button class="btn primary" @click.pervent="setForeign">Foreign</button>
-        <button class="btn primary" @click.pervent="removeColumn">Delete</button>
-        <button class="btn primary" @click.pervent="updateColumn">Update</button>
+        <p v-if="column.foreign.length > 0">
+          <button class="btn btn-link" @click.pervent="removeForeign">Remove Foreign</button>
+        </p>
+        <button class="btn btn-link" @click.pervent="setForeign" v-if="!column.foreign.length">Foreign</button>
+        <button class="btn btn-primary text-light" @click.pervent="updateColumn">Update</button>
+        <button class="btn btn-danger" @click.pervent="removeColumn">Delete</button>
       </div>
     </div>
 

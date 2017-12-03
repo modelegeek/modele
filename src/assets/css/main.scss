@@ -1,7 +1,11 @@
+@import "function";
+@import "mixins";
 @import "variable";
 @import "helper";
 @import "input";
 @import "button";
+@import "text";
+@import "modele_table";
 
 * {
   box-sizing: border-box;
@@ -22,58 +26,4 @@ html, body {
   color: #2c3e50;
   width: 100%;
   height: 100%
-}
-
-//.column-detail-box {
-//  height: 210px;
-//  width: 300px;
-//  background-color: aliceblue;
-//  label {
-//    text-align: left;
-//  }
-//}
-
-.small-row {
-  font-size: 10px;
-}
-
-.sql-table {
-  position: absolute;
-  width: 200px;
-  border: 1px solid;
-  @include border-radius(4px);
-
-  .table-name-form {
-    margin: 0;
-    padding: 10px 15px;
-  }
-
-  .table-name {
-    border-bottom: 1px solid;
-    background-color: $table-name-color;
-    color: #fff;
-    font-weight: bold;
-  }
-
-  p {
-    margin: 0;
-    padding: 5px 0px;
-  }
-
-  .column {
-    padding: 0 10px;
-    border-bottom: 1px solid;
-    background-color: #ffffff;
-  }
-}
-
-.line-svg {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  display: flex;
-}
-
-.highlight-none{
-  @include user-select(none);
 }

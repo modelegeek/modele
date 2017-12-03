@@ -197,4 +197,8 @@ export default class Database {
 
     this.findAndRemoveForeignKey(tableId, foreignKey.on, columnId, foreignKey.references);
   }
+
+  cloneDatabase (){
+    return Object.assign({}, this);
+  }
 }
