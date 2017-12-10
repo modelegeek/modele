@@ -1,14 +1,23 @@
-@mixin border-radius($radius) {
-  -webkit-border-radius: $radius;
-  -moz-border-radius: $radius;
-  -ms-border-radius: $radius;
-  border-radius: $radius;
-}
+
 
 @mixin user-select($value) {
   -webkit-user-select: $value;
   -moz-user-select: $value;
   -ms-user-select: $value;
+}
+
+@mixin hover-focus {
+  @if $enable-hover-media-query {
+    &:focus {
+      @content;
+    }
+    @include hover { @content; }
+  } @else {
+    &:focus,
+    &:hover {
+      @content;
+    }
+  }
 }
 
 .text-left {
@@ -31,6 +40,10 @@
   padding-right: 15px !important;
 }
 
-.padding-bottom-10{
+.padding-bottom-10 {
   padding-bottom: 10px !important;
+}
+
+.small-row {
+  font-size: 10px;
 }

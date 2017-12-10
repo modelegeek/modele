@@ -1,0 +1,17 @@
+@each $color, $value in $theme-colors {
+  .text-#{$color} {
+    @include text-variant($value);
+  }
+}
+
+.text-sm {
+  font-size: $font-size-sm
+}
+
+.text-md {
+  font-size: $font-size-base
+}
+
+.text-lg {
+  font-size: $font-size-lg
+}

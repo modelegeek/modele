@@ -1,0 +1,65 @@
+// main table
+.sql-table {
+  position: absolute;
+  overflow: hidden;
+  width: 200px;
+  border: 1px solid #eeefff;
+  @include border-radius(4px);
+  box-shadow: $light 2px 4px 5px -2px;
+
+  .table-name-form {
+    margin: 0;
+    padding: 10px 15px;
+  }
+
+  .table-name {
+    border-bottom: 1px solid;
+    background-color: $theme;
+    color: #fff;
+    font-weight: bold;
+  }
+
+  p {
+    margin: 0;
+    padding: 5px 0px;
+  }
+}
+
+// table column
+.column {
+  border-bottom: 1px solid $gray-500;
+  background-color: $white;
+
+  .small-row {
+    display: inline-block;
+    padding: 5px 0;
+
+    .checkbox {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+  }
+
+  .btn{
+    font-size: $font-size-sm;
+  }
+}
+
+.line-svg {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  display: flex;
+  z-index: auto;
+}
+
+.highlight-none {
+  @include user-select(none);
+  background-color: $white;
+}
+
+.function-menu{
+  position: relative;
+}

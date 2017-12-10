@@ -11,6 +11,7 @@
 
   import Database from "../classes/Database";
   import ForeignKeys from "../classes/ForeignKey";
+  import * as _ from "lodash";
 
   export default {
     name: 'table-menu',
@@ -30,19 +31,20 @@
         this.database.appendTable();
       },
       saveTable: function (){
-        let database = this.database;
-        for ( let object of database.foreign_keys ) {
-          delete object.from.element;
-          delete object.to.element;
+        var databaseClone = this.database.cloneDatabase();
+
+        for ( let foreignKey of databaseClone.foreign_keys ) {
+          delete foreignKey.from.element;
+          delete foreignKey.to.element;
         }
 
-        for ( let table of database.tables ) {
+        for ( let table of databaseClone.tables ) {
           for ( let column of table.columns ) {
             delete column.element;
           }
         }
 
-        localStorage.setItem('test', JSON.stringify(database));
+        localStorage.setItem('test', JSON.stringify(databaseClone));
       },
       loadTable: function (){
         let loadDatabase = JSON.parse(localStorage.getItem('test'));
