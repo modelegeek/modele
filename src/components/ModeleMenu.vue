@@ -1,8 +1,10 @@
 <template>
-  <div class="function-menu">
-    <a @click.prevent="createTable" href="#">Create Table</a>
-    <a @click.prevent="saveTable" href="#">Save Database</a>
-    <a @click.prevent="loadTable" href="#">Load Database</a>
+  <div class="sidebar">
+    <ul>
+      <li><a @click.prevent="createTable" href="#">Create Table></a></li>
+      <li><a @click.prevent="saveTable" href="#">Save Database></a></li>
+      <li><a @click.prevent="loadTable" href="#">Load Database></a></li>
+    </ul>
   </div>
 
 </template>

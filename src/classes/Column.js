@@ -18,7 +18,7 @@ export default class Column {
     this.foreign = [];
   }
 
-  setData(column){
+  setData (column){
     this.type = column.type;
     this.default = column.default;
     this.auto_increment = column.auto_increment;

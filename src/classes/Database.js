@@ -102,7 +102,6 @@ export default class Database {
 
   // redraw foreign key
   redrawForeignKeys (){
-    // console.log(this.foreign_keys);
     for ( let foreignKey of this.foreign_keys ) {
       foreignKey.d = foreignKey.calculateD()
     }

@@ -1,6 +1,6 @@
-# vue
+# Modele
 
-> vue
+> Build with Vue.js
 
 ## Build Setup
 

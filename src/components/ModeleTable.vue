@@ -63,11 +63,13 @@
     },
     mounted: function (){
       var el = document.getElementById('columns');
-      var sortable = Sortable.create(el);
-    },
-    updated: function (){
+      var table = this.table;
+      var sortable = Sortable.create(el, {
+        onEnd: function (evt){
+          table.reindex(evt,table);
+        },
+      });
 
-      console.log(1);
     },
     methods: {
       setForeign: function (){

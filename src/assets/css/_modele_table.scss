@@ -42,7 +42,7 @@
     }
   }
 
-  .btn{
+  .btn {
     font-size: $font-size-sm;
   }
 }
@@ -60,6 +60,8 @@
   background-color: $white;
 }
 
-.function-menu{
+.sidebar {
   position: relative;
+  float: left;
+  left: 0px;
 }
