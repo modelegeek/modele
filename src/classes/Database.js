@@ -170,6 +170,11 @@ export default class Database {
     this.next_table_id = loadedData.next_table_id;
   }
 
+  reset (){
+    this.tables = [];
+    this.foreign_keys = [];
+  }
+
   getTableColumn (tableId, columnId){
     let table = _.find(this.tables, function (table){
       return table.id == tableId;
@@ -196,9 +201,5 @@ export default class Database {
     }
 
     this.findAndRemoveForeignKey(tableId, foreignKey.on, columnId, foreignKey.references);
-  }
-
-  cloneDatabase (){
-    return Object.assign({}, this);
   }
 }

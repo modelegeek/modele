@@ -11,7 +11,6 @@
 
   import Database from "../classes/Database";
   import ForeignKeys from "../classes/ForeignKey";
-  import * as _ from "lodash";
 
   export default {
     name: 'table-menu',
@@ -31,7 +30,7 @@
         this.database.appendTable();
       },
       saveTable: function (){
-        var databaseClone = this.database.cloneDatabase();
+        var databaseClone = this.database;
 
         for ( let foreignKey of databaseClone.foreign_keys ) {
           delete foreignKey.from.element;
@@ -43,28 +42,35 @@
             delete column.element;
           }
         }
+        var name = 'test';
+        localStorage.setItem(name, JSON.stringify(databaseClone));
+        this.database.reset();
 
-        localStorage.setItem('test', JSON.stringify(databaseClone));
+        this.$nextTick(this.loadTable);
+        alert('save successfully');
       },
       loadTable: function (){
         let loadDatabase = JSON.parse(localStorage.getItem('test'));
-        this.database.loadData(loadDatabase);
+        this.database.reset();
+        this.$nextTick(() =>{
+          this.database.loadData(loadDatabase);
 
-        let databaseOriginalKey = this.database.foreign_keys;
-        this.database.foreign_keys = [];
+          let databaseOriginalKey = this.database.foreign_keys;
+          this.database.foreign_keys = [];
 
-        for ( let foreignKey of databaseOriginalKey ) {
+          for ( let foreignKey of databaseOriginalKey ) {
 
-          let fromColumn = this.database.getTableColumn(foreignKey.from.table_id, foreignKey.from.column_id);
-          let toColumn = this.database.getTableColumn(foreignKey.to.table_id, foreignKey.to.column_id);
+            let fromColumn = this.database.getTableColumn(foreignKey.from.table_id, foreignKey.from.column_id);
+            let toColumn = this.database.getTableColumn(foreignKey.to.table_id, foreignKey.to.column_id);
 
-          this.$nextTick(function (){
-            foreignKey.from.element = fromColumn.element;
-            foreignKey.to.element = toColumn.element;
+            this.$nextTick(function (){
+              foreignKey.from.element = fromColumn.element;
+              foreignKey.to.element = toColumn.element;
 
-            this.database.foreign_keys.push(new ForeignKeys(foreignKey.from, foreignKey.to));
-          });
-        }
+              this.database.foreign_keys.push(new ForeignKeys(foreignKey.from, foreignKey.to));
+            });
+          }
+        });
       }
     }
   }
