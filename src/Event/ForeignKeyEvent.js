@@ -48,7 +48,7 @@ export default class ForeignKeyEvent {
   }
 
   // set foreign key event
-  setForeign (element, database, tableId, tableName, columnId){
+  setForeign (element, database, tableId, tableColor, tableName, columnId){
     let column = this.column;
 
     if ( this.set_from_table ) {
@@ -61,11 +61,11 @@ export default class ForeignKeyEvent {
     // parent key
     let fromForeignKey = new ForeignKeyInterface(element, 'from', tableId, columnId);
 
-    // set the foreign key in this column to extracting the foreign key later in migration file
+    // set the foreign key in this column to extracting the foreign key lazxter in migration file
     column.insertForeignKey(tableId, columnId);
 
     // push foreign key in the top-est level in the ecosystem (for drawing the line)
-    database.foreign_keys.push(new ForeignKey(fromForeignKey, toForeignKey));
+    database.foreign_keys.push(new ForeignKey(fromForeignKey, toForeignKey, tableColor));
 
     // stop broadcasting flag the foreign key
     database.stopBroadcastForeign();

@@ -23,7 +23,7 @@ export default class Database {
 
   assignTableClass (tables){
     for ( let table of tables ) {
-      let tableObj = new Table(table.id, table.x, table.y, false);
+      let tableObj = new Table(table.id, table.x, table.y, false, table.foreign_color);
       tableObj.setTableData(table);
 
       this.tables.push(tableObj);

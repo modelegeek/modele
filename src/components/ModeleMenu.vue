@@ -67,9 +67,10 @@
 
             this.$nextTick(function (){
               foreignKey.from.element = fromColumn.element;
+              foreignKey.from.element = fromColumn.element;
               foreignKey.to.element = toColumn.element;
 
-              this.database.foreign_keys.push(new ForeignKeys(foreignKey.from, foreignKey.to));
+              this.database.foreign_keys.push(new ForeignKeys(foreignKey.from, foreignKey.to, foreignKey.color));
             });
           }
         });

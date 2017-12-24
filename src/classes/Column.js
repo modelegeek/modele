@@ -63,7 +63,7 @@ export default class Column {
   }
 
   // broadcast foreign key event
-  broadcastForeignKeyEvent (element, tableId, tableName, database){
+  broadcastForeignKeyEvent (element, tableId, tableColor, tableName, database){
     let columnId = this.id;
 
     // if parent key is not primary key or unique key will return error
@@ -81,7 +81,7 @@ export default class Column {
 
       if ( !foreignKeyEventClass.checkIfHaveSameForeignKey(columnId, tableId, database) ) return;
 
-      foreignKeyEventClass.setForeign(element, database, tableId, tableName, columnId);
+      foreignKeyEventClass.setForeign(element, database, tableId, tableColor, tableName, columnId);
     })
 
     database.broadcastForeign();
