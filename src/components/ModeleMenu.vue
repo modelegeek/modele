@@ -1,12 +1,15 @@
 <template>
   <div class="sidebar">
-    <ul>
-      <li><a @click.prevent="createTable" href="#">Create Table></a></li>
-      <li><a @click.prevent="saveTable" href="#">Save Database></a></li>
-      <li><a @click.prevent="loadTable" href="#">Load Database></a></li>
-    </ul>
+      <div>
+        <a @click.prevent="createTable" href="#"><i class="fas fa-plus"></i>Create Table</a>
+      </div>
+      <div>
+        <a @click.prevent="saveTable" href="#"><i class="fas fa-upload"></i>Save Database</a>
+      </div>
+      <div>
+        <a @click.prevent="loadTable" href="#"><i class="fas fa-download"></i>Load Database</a>
+      </div>
   </div>
-
 </template>
 
 <script>
@@ -14,6 +17,7 @@
   import Database from "../classes/Database";
   import ForeignKeys from "../classes/ForeignKey";
   import * as _ from "lodash";
+  import "@fortawesome/fontawesome";
 
   export default {
     name: 'table-menu',

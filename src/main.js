@@ -4,7 +4,6 @@ import Vue from "vue";
 import App from "./App";
 
 Vue.config.productionTip = false;
-
 window.Events = new Vue({});
 
 /* eslint-disable no-new */

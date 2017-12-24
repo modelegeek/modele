@@ -32,12 +32,10 @@
 
   export default {
     name: 'database',
-
     components: {
       'modele-table': ModeleTable,
       'table-menu': TableMenu,
     },
-
     data (){
       return {
         database: database,
