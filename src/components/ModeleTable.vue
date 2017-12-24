@@ -1,7 +1,7 @@
 <template>
-  <div class="sql-table" v-draggable="{table: table, database: database}">
+  <div class="sql-table" style="position: absolute">
 
-    <div class="table-name highlight-none" @click.pervent="setForeign">
+    <div class="table-name highlight-none" @click.pervent="setForeign" v-draggable="{table: table, database: database}">
       <p v-show="table.form_hidden" @dblclick="showForm">{{table.name}}</p>
       <div class="table-name-form" v-show="table.form_hidden == false">
         <input type="text" v-model="table.name" @keyup.enter="submitTableName" v-focus/>
@@ -9,15 +9,16 @@
       </div>
     </div>
 
-    <div is="modele-column"
-         v-for="(column, index) in table.columns"
-         :key="column.id"
-         :index="index"
-         :table="table"
-         :database="database"
-         :column="column">
+    <div id="columns">
+      <div is="modele-column"
+           v-for="(column, index) in table.columns"
+           :key="column.id"
+           :index="index"
+           :table="table"
+           :database="database"
+           :column="column">
+      </div>
     </div>
-
     <div class="highlight-none" @click.prevent="addColumn">
       <p class="text-center"> + column </p>
     </div>
@@ -28,6 +29,7 @@
 <script>
   // component
   import Vue from "vue";
+  import Sortable from "sortablejs";
   import ModeleColumn from './ModeleColumn';
 
   import ForeignKey from "../interface/ForeignKeyInterface";
@@ -59,7 +61,16 @@
     data (){
       return {}
     },
+    mounted: function (){
+      var el = document.getElementById('columns');
+      var table = this.table;
+      var sortable = Sortable.create(el, {
+        onEnd: function (evt){
+          table.reindex(evt,table);
+        },
+      });
 
+    },
     methods: {
       setForeign: function (){
         if ( this.database.foreign_broadcasting ) {

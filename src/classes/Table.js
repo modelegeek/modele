@@ -143,4 +143,21 @@ export default class Table {
       Events.$emit('setForeign', foreignKey);
     })
   }
+
+  reindex (evt,table){
+    let movedData = table.columns[evt.oldIndex];
+    if ( evt.oldIndex > evt.newIndex ) {
+      for (let i = evt.oldIndex; i > evt.newIndex; i--) {
+        table.columns[i] = table.columns[i-1]
+      }
+      table.columns[evt.newIndex] = movedData;
+    }
+    else {
+      for (let i = evt.oldIndex; i < evt.newIndex; i++) {
+        table.columns[i] = table.columns[i+1]
+      }
+      table.columns[evt.newIndex] = movedData;
+    }
+
+  }
 }
