@@ -165,15 +165,16 @@
       setForeign: function (){
         let element = this.$el;
         let tableId = this.table.id;
+        let tableColor = this.table.foreign_color;
         let tableName = this.table.name;
         let database = this.database;
 
         // if foreign broadcasting is on will trigger the custom function instead of
         // create a function to broadcast again
         if ( this.database.foreign_broadcasting ) {
-          this.column.setForeignKeyEvent(tableId)
+          this.column.setForeignKeyEvent(tableId, tableColor)
         } else {
-          this.column.broadcastForeignKeyEvent(element, tableId, tableName, database)
+          this.column.broadcastForeignKeyEvent(element, tableId, tableColor, tableName, database)
         }
       }
     }

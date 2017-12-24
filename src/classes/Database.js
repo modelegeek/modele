@@ -23,7 +23,7 @@ export default class Database {
 
   assignTableClass (tables){
     for ( let table of tables ) {
-      let tableObj = new Table(table.id, table.x, table.y, false);
+      let tableObj = new Table(table.id, table.x, table.y, false, table.foreign_color);
       tableObj.setTableData(table);
 
       this.tables.push(tableObj);
@@ -169,6 +169,11 @@ export default class Database {
     this.next_table_id = loadedData.next_table_id;
   }
 
+  reset (){
+    this.tables = [];
+    this.foreign_keys = [];
+  }
+
   getTableColumn (tableId, columnId){
     let table = _.find(this.tables, function (table){
       return table.id == tableId;
@@ -195,9 +200,5 @@ export default class Database {
     }
 
     this.findAndRemoveForeignKey(tableId, foreignKey.on, columnId, foreignKey.references);
-  }
-
-  cloneDatabase (){
-    return Object.assign({}, this);
   }
 }

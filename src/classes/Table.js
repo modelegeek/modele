@@ -5,11 +5,15 @@ import ForeignKeyEventInterface from "../interface/ForeignKeyEventInterface";
 export default class Table {
 
   // construct a new table
-  constructor (id, clientX, clientY, defaultCol = true){
+  constructor (id, clientX, clientY, defaultCol = true, color = null){
+    if(color == null)
+      color = "#"+((1<<24)*Math.random()|0).toString(16);
+
     this.x = clientX;
     this.y = clientY;
     this.id = id;
     this.name = "";
+    this.foreign_color = color;
     this.form_hidden = false;
     this.next_column_id = 1;
     this.columns = [];

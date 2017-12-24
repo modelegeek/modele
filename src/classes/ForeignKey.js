@@ -1,9 +1,9 @@
-export default class VisualiseForeignKeys {
+export default class ForeignKey {
 
-  constructor (from, to){
+  constructor (from, to, color){
     this.from = from;
     this.to = to;
-    this.color = '#000';
+    this.color = color;
     this.d = this.calculateD();
   }
 
