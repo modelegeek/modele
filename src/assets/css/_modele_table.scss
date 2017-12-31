@@ -1,4 +1,9 @@
 // main table
+
+.focus {
+  z-index: 1;
+}
+
 .sql-table {
   position: absolute;
   overflow: hidden;
@@ -67,17 +72,17 @@
   margin-top: 10px;
   a {
     padding: 5px 5px 5px 5px;
-    display:inline-block;
+    display: inline-block;
     background-color: $primary;
     color: $white;
     height: 100%;
     width: 100%;
     text-decoration: none;
-    i{
-      height:100%;
-      width:100%;
+    i {
+      height: 100%;
+      width: 100%;
     }
-    &:hover{
+    &:hover {
       background-color: $white;
       color: $primary;
     }

@@ -30,6 +30,12 @@ export default class Database {
     }
   }
 
+  defocusAllTables(){
+    for ( let table of this.tables ) {
+      table.focus = false;
+    }
+  }
+
   // set broadcasting to true as a flag
   broadcastForeign (){
     this.foreign_broadcasting = true;
@@ -80,6 +86,8 @@ export default class Database {
     }
 
     let table_id = this.next_table_id;
+
+    this.defocusAllTables();
 
     let tableDetail = new Table(table_id, 0, 0);
 

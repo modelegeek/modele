@@ -1,5 +1,5 @@
 <template>
-  <div class="sql-table" style="position: absolute">
+  <div class="sql-table" :class="{ focus: table.focus}" @click="focusTable">
 
     <div class="table-name highlight-none" @click.pervent="setForeign" v-draggable="{table: table, database: database}">
       <p v-show="table.form_hidden" @dblclick="showForm">{{table.name}}</p>
@@ -28,11 +28,8 @@
 
 <script>
   // component
-  import Vue from "vue";
   import Sortable from "sortablejs";
   import ModeleColumn from './ModeleColumn';
-
-  import ForeignKey from "../interface/ForeignKeyInterface";
   import Table from "../classes/Table";
   import Database from "../classes/Database";
 
@@ -66,7 +63,7 @@
       var table = this.table;
       var sortable = Sortable.create(el, {
         onEnd: function (evt){
-          table.reindex(evt,table);
+          table.reindex(evt, table);
         },
       });
 
@@ -98,6 +95,11 @@
 
       addColumn: function (){
         this.table.addColumn();
+      },
+
+      focusTable: function (){
+        this.database.defocusAllTables();
+        this.table.focus = true;
       },
 
       removeTable: function (){
