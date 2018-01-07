@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar">
-      <h3>Modele</h3>
+    <h3>Modele</h3>
     <div>
       <a @click.prevent="createTable" href="#"><i class="fas fa-plus"></i>&nbsp;Create Table</a>
     </div>
@@ -38,27 +38,45 @@
         this.database.appendTable();
       },
       saveTable: function (){
-        var name = 'test';
-        var databaseClone = this.database;
+        let name = prompt("Save your database as:");
+        if ( name ) {
+          let databaseClone = this.database;
 
-        for ( let foreignKey of databaseClone.foreign_keys ) {
-          delete foreignKey.from.element;
-          delete foreignKey.to.element;
+          for ( let foreignKey of databaseClone.foreign_keys ) {
+            delete foreignKey.from.element;
+            delete foreignKey.to.element;
+          }
+
+          for ( let table of databaseClone.tables ) {
+            for ( let column of table.columns ) {
+              delete column.element;
+            }
+          }
+          localStorage.setItem(name, JSON.stringify(databaseClone));
+          this.database.reset();
+
+          this.$nextTick(this.loadTable(name));
+          alert('Database saved successfully!');
+        } else {
+          alert('Database not saved!');
         }
-
-        for ( let table of databaseClone.tables ) {
-          for ( let column of table.columns ) {
-            delete column.element;
+      },
+      loadTable: function (name){
+        console.log(name);
+        let dataType = typeof name;
+        if ( dataType != "string" ) {
+          name = prompt("Please fill in the database name:");
+          if ( !name ) {
+            alert("no database found!");
+            return false;
           }
         }
-        localStorage.setItem(name, JSON.stringify(databaseClone));
-        this.database.reset();
-
-        this.$nextTick(this.loadTable);
-        alert('save successfully');
-      },
-      loadTable: function (){
-        let loadDatabase = JSON.parse(localStorage.getItem('test'));
+        let loadDatabase = JSON.parse(localStorage.getItem(name));
+        if ( !loadDatabase ) {
+          let error = "No database named " + name + " found!";
+          alert(error);
+          return false;
+        }
         this.database.reset();
         this.$nextTick(() =>{
           this.database.loadData(loadDatabase);
