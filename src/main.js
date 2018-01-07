@@ -31,12 +31,14 @@ Vue.directive('draggable', {
     let startX, startY, initialMouseX, initialMouseY;
 
     let database = binding.value.database;
+    database.defocusAllTables();
 
     function mouseMove (e){
       let dx = e.clientX - initialMouseX;
       let dy = e.clientY - initialMouseY;
       let tableDetail = binding.value.table;
       database.redrawForeignKeys();
+      tableDetail.focus = true;
       tableDetail.y = startY + dy;
       tableDetail.x = startX + dx;
       return false;

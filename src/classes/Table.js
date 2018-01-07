@@ -6,12 +6,13 @@ export default class Table {
 
   // construct a new table
   constructor (id, clientX, clientY, defaultCol = true, color = null){
-    if(color == null)
-      color = "#"+((1<<24)*Math.random()|0).toString(16);
+    if ( color == null )
+      color = "#" + ((1 << 24) * Math.random() | 0).toString(16);
 
     this.x = clientX;
     this.y = clientY;
     this.id = id;
+    this.focus = true;
     this.name = "";
     this.foreign_color = color;
     this.form_hidden = false;
@@ -30,6 +31,7 @@ export default class Table {
     this.name = table.name;
     this.next_column_id = table.next_column_id;
     this.form_hidden = table.form_hidden;
+    this.focus = table.focus;
     this.setColumn(table.columns);
   }
 
@@ -148,17 +150,17 @@ export default class Table {
     })
   }
 
-  reindex (evt,table){
+  reindex (evt, table){
     let movedData = table.columns[evt.oldIndex];
     if ( evt.oldIndex > evt.newIndex ) {
-      for (let i = evt.oldIndex; i > evt.newIndex; i--) {
-        table.columns[i] = table.columns[i-1]
+      for ( let i = evt.oldIndex; i > evt.newIndex; i-- ) {
+        table.columns[i] = table.columns[i - 1]
       }
       table.columns[evt.newIndex] = movedData;
     }
     else {
-      for (let i = evt.oldIndex; i < evt.newIndex; i++) {
-        table.columns[i] = table.columns[i+1]
+      for ( let i = evt.oldIndex; i < evt.newIndex; i++ ) {
+        table.columns[i] = table.columns[i + 1]
       }
       table.columns[evt.newIndex] = movedData;
     }

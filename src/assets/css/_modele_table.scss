@@ -1,4 +1,9 @@
 // main table
+
+.focus {
+  z-index: 1;
+}
+
 .sql-table {
   position: absolute;
   overflow: hidden;
