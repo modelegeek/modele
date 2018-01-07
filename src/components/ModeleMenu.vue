@@ -1,14 +1,15 @@
 <template>
   <div class="sidebar">
-      <div>
-        <a @click.prevent="createTable" href="#"><i class="fas fa-plus"></i>Create Table</a>
-      </div>
-      <div>
-        <a @click.prevent="saveTable" href="#"><i class="fas fa-upload"></i>Save Database</a>
-      </div>
-      <div>
-        <a @click.prevent="loadTable" href="#"><i class="fas fa-download"></i>Load Database</a>
-      </div>
+      <h3>Modele</h3>
+    <div>
+      <a @click.prevent="createTable" href="#"><i class="fas fa-plus"></i>&nbsp;Create Table</a>
+    </div>
+    <div>
+      <a @click.prevent="saveTable" href="#"><i class="fas fa-upload"></i>&nbsp;Save Table</a>
+    </div>
+    <div>
+      <a @click.prevent="loadTable" href="#"><i class="fas fa-download"></i>&nbsp;Load Table</a>
+    </div>
   </div>
 </template>
 
@@ -17,7 +18,7 @@
   import Database from "../classes/Database";
   import ForeignKeys from "../classes/ForeignKey";
   import * as _ from "lodash";
-  import "@fortawesome/fontawesome";
+  import "../assets/js/fontawesome-all.min";
 
   export default {
     name: 'table-menu',
@@ -37,6 +38,7 @@
         this.database.appendTable();
       },
       saveTable: function (){
+        var name = 'test';
         var databaseClone = this.database;
 
         for ( let foreignKey of databaseClone.foreign_keys ) {
@@ -49,7 +51,6 @@
             delete column.element;
           }
         }
-        var name = 'test';
         localStorage.setItem(name, JSON.stringify(databaseClone));
         this.database.reset();
 

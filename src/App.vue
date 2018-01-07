@@ -25,7 +25,7 @@
 
 <script>
   import ModeleTable from './components/ModeleTable';
-  import TableMenu from './components/ModeleMenu';
+  import ModeleMenu from './components/ModeleMenu';
   import Database from "./classes/Database";
 
   let database = new Database();
@@ -34,7 +34,7 @@
     name: 'database',
     components: {
       'modele-table': ModeleTable,
-      'table-menu': TableMenu,
+      'table-menu': ModeleMenu,
     },
     data (){
       return {
