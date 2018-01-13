@@ -128,9 +128,11 @@
         let column = this.column;
         if ( column.name == '' || column.name == null ) {
           alert('Column name cannot be empty');
+
           return false;
         } else if ( this.table.getSameColumnName(column.name) >= 1 ) {
           alert('Table cannot have same column name');
+
           return;
         }
 

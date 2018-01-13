@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    <div id="columns">
+    <div class="columns">
       <div is="modele-column"
            v-for="(column, index) in table.columns"
            :key="column.id"
@@ -58,16 +58,19 @@
     data (){
       return {}
     },
-    mounted: function (){
-      var el = document.getElementById('columns');
-      var table = this.table;
-      var sortable = Sortable.create(el, {
+
+    mounted: function () {
+      let el = this.$el.querySelector('.columns');
+      let table = this.table;
+      let database = this.database;
+      let sortable = Sortable.create(el, {
         onEnd: function (evt){
           table.reindex(evt, table);
+          database.redrawForeignKeys();
         },
       });
-
     },
+
     methods: {
       setForeign: function (){
         if ( this.database.foreign_broadcasting ) {
