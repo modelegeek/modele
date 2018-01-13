@@ -13,9 +13,9 @@ export default class Database {
       this.assignTableClass(tables);
     }
 
-    if ( foreign_keys.length >= 1 ) {
-      this.assignForeignKeyClass(foreign_keys);
-    }
+    // if ( foreign_keys.length >= 1 ) {
+    //   this.assignForeignKeyClass(foreign_keys);
+    // }
 
     this.next_table_id = 1;
     this.foreign_broadcasting = null;
@@ -30,7 +30,7 @@ export default class Database {
     }
   }
 
-  defocusAllTables(){
+  defocusAllTables (){
     for ( let table of this.tables ) {
       table.focus = false;
     }

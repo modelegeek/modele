@@ -1,7 +1,14 @@
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
+
 var path = require('path')
 var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
+
+const extractSass = new ExtractTextPlugin({
+  filename: "[name].css",
+  // disable: process.env.NODE_ENV === "development"
+});
 
 function resolve (dir){
   return path.join(__dirname, '..', dir)
@@ -36,6 +43,18 @@ module.exports = {
         options: vueLoaderConfig
       },
       {
+        test: /\.scss$/,
+        use: extractSass.extract({
+          use: [{
+            loader: "css-loader"
+          }, {
+            loader: "sass-loader"
+          }],
+          // use style-loader in development
+          fallback: "style-loader"
+        })
+      },
+      {
         test: /\.js$/,
         loader: 'babel-loader',
         include: [resolve('src'), resolve('test')]
@@ -57,5 +76,8 @@ module.exports = {
         }
       }
     ]
-  }
+  },
+  plugins: [
+    extractSass
+  ],
 }

@@ -17,8 +17,6 @@
 
   import Database from "../classes/Database";
   import ForeignKeys from "../classes/ForeignKey";
-  import * as _ from "lodash";
-  import "../assets/js/fontawesome-all.min";
 
   export default {
     name: 'table-menu',
