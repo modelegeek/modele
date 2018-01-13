@@ -1,14 +1,22 @@
 <template>
   <div class="sidebar">
     <h3>Modele</h3>
-    <div>
-      <a @click.prevent="createTable" href="#"><i class="fas fa-plus"></i>&nbsp;Create Table</a>
-    </div>
-    <div>
-      <a @click.prevent="saveTable" href="#"><i class="fas fa-upload"></i>&nbsp;Save Table</a>
-    </div>
-    <div>
-      <a @click.prevent="loadTable" href="#"><i class="fas fa-download"></i>&nbsp;Load Table</a>
+    <div id="modele-menu">
+      <div>
+        <a @click.prevent="createTable" href="#">
+          <i class="fas fa-plus"></i>&nbsp;Create Table
+        </a>
+      </div>
+      <div>
+        <a @click.prevent="saveTable" href="#">
+          <i class="fas fa-upload"></i>&nbsp;Save Table
+        </a>
+      </div>
+      <div>
+        <a @click.prevent="loadTable" href="#">
+          <i class="fas fa-download"></i>&nbsp;Load Table
+        </a>
+      </div>
     </div>
   </div>
 </template>
