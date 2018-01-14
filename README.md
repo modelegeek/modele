@@ -24,13 +24,18 @@ Remove foreign key - simply tap remove foreign key button at the child column
 ``` bash
 # install 
 npm install
+
+or 
+
+# yarn supporter !
+yarn install
 ```
 
 ## Run
 ``` bash
 # serve with hot reload at localhost:8000
-npm run dev
+npm run dev // yarn run dev
 
 # build for production with minification
-npm run build
+npm run build // yarn run dev
 ```  
