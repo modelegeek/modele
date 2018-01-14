@@ -39,3 +39,6 @@ npm run dev // yarn run dev
 # build for production with minification
 npm run build // yarn run dev
 ```  
+
+# License
+Faker is released under the MIT Licence. See the bundled LICENSE file for details.
