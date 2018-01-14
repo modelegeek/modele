@@ -1,7 +1,6 @@
 
 # Modele SQL
-Modele Sql is a sql design tools build by VueJs. We wanted to create an easy use sql design tool for you guys to use and view the full picture of your own design. Of course more are comming we are 
-tent to build more than what we are showing right now. As for future plan we wish to create migration on ROR and Laravel Framework!
+Modele Sql is a sql design tool build in VueJs. We wanted to create an easy to use sql design tool for you guys to use and view the full picture of your own design. Of course more features are coming. We are intent to build more than what we are showing right now. As for future plans we wish to create migrations for ROR and Laravel Framework!
 
 ## How to use
 Table and column are be able to drag and drop everywhere. <br/>
