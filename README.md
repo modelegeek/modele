@@ -7,7 +7,9 @@ tent to build more than what we are showing right now. As for future plan we wis
 Table and column are be able to drag and drop everywhere. <br/>
 Create table `alt + click(anywhere)` or use `create table button`  <br/> 
 Submit table name `enter in in table title input` <br/>
+Edit table name `double click on the table name to show input box` <br/>
 Submit column name `enter in name or default fields` or `click update button` <br/>
+Edit column `double click on the column name to show input settings` <br/>
  
 Create foreign key 
 - Column must be primary key or unique.
